@@ -1,0 +1,90 @@
+<ion-content fullscreen class="payment-content">
+
+  <div class="payment-header">
+    <ion-icon name="arrow-back-outline" (click)="goBack()"></ion-icon>
+    <h2>Metode Pembayaran</h2>
+  </div>
+
+  <div class="section-label">Bayar Langsung</div>
+
+  <div class="method-item disabled" [class.active]="selectedPayment === 'COD'">
+    <div class="left">
+      <div class="icon-wrap green">
+        <ion-icon name="receipt-outline"></ion-icon>
+      </div>
+      <div class="method-info">
+        <span class="method-name">COD</span>
+        <small>Bayar saat barang tiba</small>
+      </div>
+    </div>
+    <div class="radio-wrap">
+      <div class="radio-dot" [class.checked]="selectedPayment === 'COD'"></div>
+    </div>
+  </div>
+
+  <div class="section-label">Pembayaran Digital</div>
+
+  <div class="method-item" [class.active]="selectedPayment === 'QRIS'" (click)="selectQris()">
+    <div class="left">
+      <div class="icon-wrap pink">
+        <ion-icon name="qr-code-outline"></ion-icon>
+      </div>
+      <div class="method-info">
+        <span class="method-name">QRIS</span>
+        <small>GoPay, OVO, Dana, ShopeePay, dll</small>
+      </div>
+    </div>
+    <div class="radio-wrap">
+      <div class="radio-dot" [class.checked]="selectedPayment === 'QRIS'"></div>
+    </div>
+  </div>
+
+  <div class="section-label">Virtual Account</div>
+
+  <div class="method-item disabled" [class.active]="selectedPayment === 'Transfer Bank'">
+    <div class="left">
+      <div class="icon-wrap green">
+        <ion-icon name="business-outline"></ion-icon>
+      </div>
+      <div class="method-info">
+        <span class="method-name">Transfer Bank</span>
+        <small *ngIf="selectedBank && selectedPayment === 'Transfer Bank'">{{ selectedBank }} terpilih</small>
+        <small *ngIf="!selectedBank || selectedPayment !== 'Transfer Bank'">BCA, BRI, Mandiri</small>
+      </div>
+    </div>
+    <ion-icon [name]="showBank ? 'chevron-up-outline' : 'chevron-down-outline'" class="chevron"></ion-icon>
+  </div>
+
+
+  <div class="bank-list" *ngIf="showBank">
+    <div
+      class="bank-item"
+      *ngFor="let bank of banks"
+      [class.bank-active]="selectedPayment === 'Transfer Bank' && selectedBank === bank.name"
+      (click)="selectBank(bank)">
+
+      <div class="bank-left">
+        <img [src]="bank.logo" [alt]="bank.name">
+        <div>
+          <span class="bank-name">{{ bank.name }}</span>
+          <small>Virtual Account</small>
+        </div>
+      </div>
+
+      <div class="radio-dot" [class.checked]="selectedPayment === 'Transfer Bank' && selectedBank === bank.name"></div>
+
+    </div>
+  </div>
+
+</ion-content>
+
+
+<div class="payment-bottom">
+  <div class="selected-info" *ngIf="selectedPayment">
+    <span>Terpilih:</span>
+    <strong>{{ selectedPayment }}{{ selectedBank ? ' — ' + selectedBank : '' }}</strong>
+  </div>
+  <button (click)="confirmPayment()" [class.has-selection]="selectedPayment">
+    Konfirmasi Pembayaran
+  </button>
+</div>

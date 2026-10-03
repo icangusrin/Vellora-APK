@@ -1,0 +1,112 @@
+<ion-content class="otp-content">
+
+  <div class="otp-wrapper">
+
+    <!-- HEADER + BACK BUTTON -->
+    <div class="otp-header">
+
+      <ion-icon
+        name="arrow-back-outline"
+        (click)="goBack()">
+      </ion-icon>
+
+      <h2>Verifikasi OTP</h2>
+
+    </div>
+
+    <!-- ICON -->
+    <div class="icon-wrapper">
+      <ion-icon
+        name="mail-outline"
+        class="otp-icon">
+      </ion-icon>
+    </div>
+
+    <!-- DESCRIPTION -->
+    <p class="description">
+      Kode OTP 4 digit telah dikirim ke<br>
+      <strong>{{ email }}</strong>
+    </p>
+
+    <!-- 4 KOTAK OTP -->
+    <div class="otp-boxes">
+
+      <input
+        #box1
+        maxlength="1"
+        type="tel"
+        inputmode="numeric"
+        [(ngModel)]="otp1"
+        (input)="onInput($event, box2, null)"
+        (keydown)="onKeyDown($event, null)">
+
+      <input
+        #box2
+        maxlength="1"
+        type="tel"
+        inputmode="numeric"
+        [(ngModel)]="otp2"
+        (input)="onInput($event, box3, box1)"
+        (keydown)="onKeyDown($event, box1)">
+
+      <input
+        #box3
+        maxlength="1"
+        type="tel"
+        inputmode="numeric"
+        [(ngModel)]="otp3"
+        (input)="onInput($event, box4, box2)"
+        (keydown)="onKeyDown($event, box2)">
+
+      <input
+        #box4
+        maxlength="1"
+        type="tel"
+        inputmode="numeric"
+        [(ngModel)]="otp4"
+        (input)="onInput($event, null, box3)"
+        (keydown)="onKeyDown($event, box3)">
+
+    </div>
+
+    <!-- TIMER + RESEND -->
+    <div class="resend-row">
+
+      <span class="timer-text" *ngIf="!canResend">
+        Kirim ulang dalam <strong>{{ timer }}s</strong>
+      </span>
+
+      <span
+        class="resend-link"
+        [class.disabled]="!canResend"
+        (click)="resendCode()">
+        Kirim Ulang OTP
+      </span>
+
+    </div>
+
+    <!-- BUTTON -->
+    <button
+      class="verify-btn"
+      (click)="verifyOtp()"
+      [disabled]="isLoading">
+
+      <span *ngIf="!isLoading">Verifikasi</span>
+      <span *ngIf="isLoading">Memverifikasi...</span>
+
+    </button>
+
+  </div>
+
+  <app-popup
+    [show]="showPopup"
+    [type]="'notice'"
+    [title]="'Notifikasi'"
+    [message]="errorMsg"
+    [icon]="'shield-outline'"
+    [confirmText]="'OK'"
+    (confirmed)="closePopup()"
+    (cancelled)="closePopup()">
+  </app-popup>
+
+</ion-content>

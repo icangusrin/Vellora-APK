@@ -1,0 +1,241 @@
+<ion-content fullscreen class="picker-content">
+  <div class="picker-top">
+
+    <div class="picker-header">
+
+      <button class="back-btn" (click)="goBack()">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </button>
+
+      <span class="header-title">Pilih Alamat</span>
+
+    </div>
+
+    <div class="step-indicator">
+
+      <div class="step-item"
+        [class.active]="currentStep === 'province'"
+        [class.done]="selectedProvince !== ''">
+        <div class="step-dot">
+          <ion-icon name="checkmark-outline" *ngIf="selectedProvince"></ion-icon>
+          <span *ngIf="!selectedProvince">1</span>
+        </div>
+        <span class="step-label">Provinsi</span>
+      </div>
+
+      <div class="step-line" [class.done]="selectedProvince !== ''"></div>
+
+      <div class="step-item"
+        [class.active]="currentStep === 'city'"
+        [class.done]="selectedCity !== ''">
+        <div class="step-dot">
+          <ion-icon name="checkmark-outline" *ngIf="selectedCity"></ion-icon>
+          <span *ngIf="!selectedCity">2</span>
+        </div>
+        <span class="step-label">Kota</span>
+      </div>
+
+      <div class="step-line" [class.done]="selectedCity !== ''"></div>
+
+      <div class="step-item"
+        [class.active]="currentStep === 'district'"
+        [class.done]="selectedDistrict !== ''">
+        <div class="step-dot">
+          <ion-icon name="checkmark-outline" *ngIf="selectedDistrict"></ion-icon>
+          <span *ngIf="!selectedDistrict">3</span>
+        </div>
+        <span class="step-label">Kecamatan</span>
+      </div>
+
+      <div class="step-line" [class.done]="selectedDistrict !== ''"></div>
+
+      <div class="step-item"
+        [class.active]="currentStep === 'postal'">
+        <div class="step-dot">
+          <span>4</span>
+        </div>
+        <span class="step-label">Detail</span>
+      </div>
+
+    </div>
+
+    <div class="location-trail" *ngIf="selectedProvince">
+
+      <div class="trail-inner">
+
+        <div class="trail-chip">
+          <ion-icon name="location-outline"></ion-icon>
+          <span>{{ selectedProvince }}</span>
+        </div>
+
+        <ng-container *ngIf="selectedCity">
+          <ion-icon name="chevron-forward-outline" class="trail-arrow"></ion-icon>
+          <div class="trail-chip">{{ selectedCity }}</div>
+        </ng-container>
+
+        <ng-container *ngIf="selectedDistrict">
+          <ion-icon name="chevron-forward-outline" class="trail-arrow"></ion-icon>
+          <div class="trail-chip">{{ selectedDistrict }}</div>
+        </ng-container>
+
+      </div>
+
+      <button class="reset-btn" (click)="resetPicker()">Atur Ulang</button>
+
+    </div>
+
+    <div class="search-wrap" *ngIf="currentStep !== 'postal'">
+
+      <div class="search-bar">
+
+        <ion-icon name="search-outline" class="search-icon"></ion-icon>
+
+        <input
+          type="text"
+          class="search-input"
+          [placeholder]="searchPlaceholder"
+          [(ngModel)]="searchText"
+          (input)="onSearchChange()">
+
+        <button
+          class="search-clear"
+          *ngIf="searchText"
+          (click)="searchText = ''; onSearchChange()">
+          <ion-icon name="close-outline"></ion-icon>
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="picker-list" *ngIf="currentStep !== 'postal'">
+
+    <div class="empty-list" *ngIf="displayedList.length === 0">
+      <ion-icon name="search-outline"></ion-icon>
+      <p>Tidak ditemukan</p>
+    </div>
+
+    <div
+      class="picker-item"
+      *ngFor="let item of displayedList; let last = last"
+      [class.last]="last"
+      (click)="selectItem(item)">
+
+      <span class="item-name">{{ item }}</span>
+
+      <ion-icon name="chevron-forward-outline" class="item-arrow"></ion-icon>
+
+    </div>
+
+  </div>
+
+ 
+  <div class="detail-form" *ngIf="currentStep === 'postal'">
+
+    <div class="form-card">
+
+      <div class="form-card-header">
+        <ion-icon name="person-outline"></ion-icon>
+        <span>Informasi Penerima</span>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Nama Penerima</label>
+        <input
+          type="text"
+          class="field-input"
+          placeholder="Nama lengkap penerima"
+          [(ngModel)]="recipientName">
+      </div>
+
+      <div class="field-divider"></div>
+
+      <div class="field-group">
+        <label class="field-label">Nomor HP</label>
+        <input
+          type="tel"
+          class="field-input"
+          placeholder="Contoh: 08123456789"
+          [(ngModel)]="phoneNumber">
+      </div>
+
+    </div>
+
+    <div class="form-card">
+
+      <div class="form-card-header">
+        <ion-icon name="home-outline"></ion-icon>
+        <span>Detail Alamat</span>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Keterangan Alamat</label>
+        <textarea
+          class="field-input field-textarea"
+          rows="3"
+          maxlength="200"
+          placeholder="No. Rumah, RT/RW, Nama Gang, Patokan, dll"
+          [(ngModel)]="detailAddress">
+        </textarea>
+      </div>
+
+      <div class="field-divider"></div>
+
+      <div class="field-group">
+        <label class="field-label">Kode Pos</label>
+        <input
+          type="number"
+          maxlength="6"
+          class="field-input"
+          placeholder="Masukkan kode pos"
+          [(ngModel)]="selectedPostal">
+      </div>
+
+    </div>
+
+    <div class="address-summary" *ngIf="selectedProvince">
+
+      <ion-icon name="location-outline"></ion-icon>
+
+      <p>
+        {{ selectedDistrict }},
+        {{ selectedCity }},
+        {{ selectedProvince }}
+      </p>
+
+    </div>
+
+    <button
+      class="save-btn"
+      [class.saving]="isSaving"
+      [disabled]="isSaving"
+      (click)="saveAddress()">
+
+      <span *ngIf="!isSaving">Simpan Alamat</span>
+
+      <span *ngIf="isSaving" class="saving-state">
+        <ion-spinner name="crescent"></ion-spinner>
+        Menyimpan...
+      </span>
+
+    </button>
+
+    <div class="bottom-safe"></div>
+
+  </div>
+
+</ion-content>
+
+<app-popup
+  [show]="showErrorPopup"
+  [type]="'notice'"
+  [title]="'Terjadi Kesalahan'"
+  [message]="errorMessage"
+  [icon]="'alert-circle-outline'"
+  [confirmText]="'OK'"
+  (confirmed)="closePopup()"
+  (cancelled)="closePopup()">
+</app-popup>

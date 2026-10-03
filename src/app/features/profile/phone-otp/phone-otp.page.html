@@ -1,0 +1,49 @@
+<ion-content fullscreen class="otp-content">
+
+  <!-- HEADER -->
+  <div class="otp-header">
+
+    <ion-icon
+      name="arrow-back-outline">
+    </ion-icon>
+
+    <h2>
+      Ubah no handphone
+    </h2>
+
+  </div>
+
+  <!-- CONTENT -->
+  <div class="otp-wrapper">
+
+    <ion-icon
+      name="mail-outline"
+      class="mail-icon">
+    </ion-icon>
+
+    <p>
+      Masukkan kode OTP yang kami
+      kirim ke email baru anda
+    </p>
+
+    <!-- OTP -->
+    <div class="otp-inputs">
+
+      <input maxlength="1" />
+      <input maxlength="1" />
+      <input maxlength="1" />
+      <input maxlength="1" />
+
+    </div>
+
+    <div class="reset-code">
+      Reset code
+    </div>
+
+  <button (click)="verifyOtp()">
+    Verifikasi
+  </button>
+
+  </div>
+
+</ion-content>

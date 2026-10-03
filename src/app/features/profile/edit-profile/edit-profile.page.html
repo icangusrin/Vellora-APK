@@ -1,0 +1,107 @@
+<ion-content fullscreen class="edit-content">
+
+  <div class="edit-header">
+
+    <ion-icon
+      name="arrow-back-outline"
+      (click)="goBack()">
+    </ion-icon>
+
+    <h2>Edit Profile</h2>
+
+  </div>
+
+  <div class="photo-section">
+
+    <div class="profile-photo">
+
+      <img
+        *ngIf="profileImage"
+        [src]="profileImage"
+        class="profile-img">
+
+      <ion-icon
+        *ngIf="!profileImage"
+        name="person-outline">
+      </ion-icon>
+
+    </div>
+
+    <input
+      type="file"
+      hidden
+      #fileInput
+      accept="image/*"
+      (change)="onSelectImage($event)">
+
+    <button (click)="fileInput.click()">Ganti Foto</button>
+
+  </div>
+
+  <div class="profile-form">
+
+    <div class="form-item">
+      <span>Nama</span>
+      <input
+        type="text"
+        [(ngModel)]="userData.name"
+        placeholder="Masukkan nama">
+    </div>
+
+
+    <div class="form-item">
+      <span>Jenis Kelamin</span>
+      <select [(ngModel)]="userData.gender">
+        <option value="Laki-laki">Laki-laki</option>
+        <option value="Perempuan">Perempuan</option>
+        <option value="Lainnya">Lainnya</option>
+      </select>
+    </div>
+
+    <div class="form-item">
+      <span>Tanggal Lahir</span>
+      <input
+        type="date"
+        [(ngModel)]="userData.birthDate">
+    </div>
+
+    <div class="form-item clickable-item" (click)="goToChangePhone()">
+      <span>No Handphone</span>
+      <div class="value-display">
+        <span>{{ userData.phone || 'Belum ditambahkan' }}</span>
+        <ion-icon name="chevron-forward-outline"></ion-icon>
+      </div>
+    </div>
+
+    <div class="form-item">
+      <span>Email</span>
+      <input
+        type="email"
+        [value]="userData.email"
+        readonly
+        class="input-readonly">
+    </div>
+
+    <div class="save-wrapper">
+      <button
+        class="save-btn"
+        [disabled]="isSaving"
+        (click)="saveProfile()">
+        {{ isSaving ? 'Menyimpan...' : 'Simpan' }}
+      </button>
+    </div>
+
+  </div>
+
+  <app-popup
+    [show]="showPopup"
+    [type]="popupType"
+    [title]="popupTitle"
+    [message]="popupMsg"
+    [icon]="popupIcon"
+    [confirmText]="'OK'"
+    (confirmed)="closePopup()"
+    (cancelled)="closePopup()">
+  </app-popup>
+
+</ion-content>

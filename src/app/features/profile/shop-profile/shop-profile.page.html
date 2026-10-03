@@ -1,0 +1,178 @@
+<ion-content fullscreen class="shop-content">
+
+  <!-- HEADER -->
+  <div class="shop-header">
+    <ion-icon name="arrow-back-outline" class="back-icon" (click)="goBack()"></ion-icon>
+    <div class="search-box">
+      <ion-icon name="search-outline"></ion-icon>
+      <input type="text" placeholder="Cari di toko" [(ngModel)]="searchText">
+    </div>
+    <div class="menu-wrapper">
+      <ion-icon name="ellipsis-vertical-outline" class="menu-icon" (click)="toggleMenu()"></ion-icon>
+      <div class="shop-menu" *ngIf="showMenu">
+        <div class="menu-item" (click)="goHome()">
+          <ion-icon name="arrow-back-outline"></ion-icon><span>Kembali ke Halaman Utama</span>
+        </div>
+        <div class="menu-item" (click)="shareShop()">
+          <ion-icon name="share-social-outline"></ion-icon><span>Share</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SHOP INFO -->
+  <div class="shop-info">
+    <div class="shop-left">
+      <img [src]="shop?.avatar || 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png'"
+           class="shop-image">
+      <div class="shop-detail">
+        <h3>
+          {{ shop?.store_name || shop?.name || 'Shop' }}
+        </h3>
+        <!-- [UPDATE] Tampilkan rating_avg toko jika ada -->
+        <p *ngIf="shopRatingAvg > 0">
+          ⭐ {{ shopRatingAvg }} · {{ shopRatingCount }} ulasan
+        </p>
+      </div>
+    </div>
+    <div class="shop-action">
+      <button class="voucher-btn" (click)="goToVoucher()">
+        <ion-icon name="ticket-outline"></ion-icon> Voucher
+      </button>
+      <button class="chat-btn" type="button" (click)="openChat()">
+        <ion-icon name="chatbubble-outline"></ion-icon> Chat
+      </button>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- TAB -->
+  <div class="shop-tab">
+    <button class="tab" [class.active]="activeTab==='Produk'" (click)="changeTab('Produk')">Produk</button>
+    <button class="tab" [class.active]="activeTab==='Ulasan Toko'" (click)="changeTab('Ulasan Toko')">Ulasan Toko</button>
+  </div>
+
+  <!-- LOADING -->
+  <div class="loading-wrap" *ngIf="isLoading && activeTab==='Produk'">
+    <p>Memuat produk...</p>
+  </div>
+
+  <!-- PRODUCT GRID -->
+  <div class="product-grid" *ngIf="activeTab==='Produk' && !isLoading && filteredProducts.length > 0">
+    <div class="product-card" *ngFor="let product of filteredProducts" (click)="openProduct(product)">
+
+      <div class="wishlist" (click)="addToCart(product, $event)">
+        <ion-icon name="bag-add-outline"></ion-icon>
+      </div>
+
+      <img [src]="product.image || 'https://picsum.photos/300'" class="product-image">
+
+      <h4>{{ product.name }}</h4>
+      <p class="sold">{{ product.sold }}</p>
+
+      <div class="bottom-info">
+        <span class="price">{{ product.price }}</span>
+
+        <!-- [UPDATE] Rating dinamis dari rating_avg produk -->
+        <span class="rating" *ngIf="product.rating_avg && product.rating_avg > 0">
+          <ion-icon name="star" style="color:#ffd33d;font-size:10px;vertical-align:middle;"></ion-icon>
+          {{ product.rating_avg }}
+        </span>
+        <span class="rating" *ngIf="!product.rating_avg || product.rating_avg == 0">
+          <span style="color:#ccc;font-size:10px;">Baru</span>
+        </span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PRODUK HABIS -->
+  <div class="out-stock-toggle" *ngIf="activeTab==='Produk' && outOfStockProducts.length > 0">
+    <button (click)="toggleOutOfStock()">
+      {{ showOutOfStock ? 'Sembunyikan Produk Habis' : 'Lihat Produk Habis' }}
+      <ion-icon [name]="showOutOfStock ? 'chevron-up-outline' : 'chevron-down-outline'"></ion-icon>
+    </button>
+  </div>
+
+  <div class="product-grid out-stock-grid" *ngIf="activeTab==='Produk' && showOutOfStock">
+    <div class="product-card out-stock-card" *ngFor="let product of outOfStockProducts">
+      <img [src]="product.image" class="product-image">
+      <div class="out-badge">HABIS</div>
+      <h4>{{ product.name }}</h4>
+      <div class="bottom-info">
+        <span class="price">{{ product.price }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- EMPTY PRODUK -->
+  <div class="empty-product" *ngIf="activeTab==='Produk' && !isLoading && filteredProducts.length===0">
+    Produk tidak ditemukan
+  </div>
+
+  <div class="review-wrapper" *ngIf="activeTab==='Ulasan Toko'">
+
+    <!-- LOADING REVIEWS -->
+    <div class="review-loading" *ngIf="isLoadingReviews">
+      <div class="spinner-ring"></div>
+      <p>Memuat ulasan...</p>
+    </div>
+
+    <!-- SUMMARY RATING TOKO -->
+    <div class="review-top" *ngIf="!isLoadingReviews">
+      <div class="review-score">
+        <h2>{{ shopRatingAvg > 0 ? shopRatingAvg : 'N/A' }}</h2>
+        <div class="star-display">
+          <ion-icon name="star" *ngFor="let s of [1,2,3,4,5]"
+            [style.color]="s <= shopRatingAvg ? '#ffd33d' : '#ddd'"
+            style="font-size:14px;">
+          </ion-icon>
+        </div>
+        <small>{{ shopRatingCount }} ulasan</small>
+      </div>
+      <div class="review-filter">
+        <button [class.active]="activeReviewFilter==='Semua'" (click)="changeReviewFilter('Semua')">
+          Semua <small>({{ reviews.length }})</small>
+        </button>
+      </div>
+    </div>
+
+    <!-- EMPTY REVIEWS -->
+    <div class="empty-review" *ngIf="!isLoadingReviews && reviews.length === 0">
+      Belum ada ulasan untuk toko ini
+    </div>
+
+    <!-- REVIEW LIST -->
+    <div *ngIf="!isLoadingReviews && reviews.length > 0">
+      <div class="review-item" *ngFor="let rv of reviews">
+
+        <div class="review-user">
+          <img [src]="rv.user_photo"
+               class="reviewer-avatar"
+               (error)="$any($event.target).src='https://cdn-icons-png.flaticon.com/512/149/149071.png'">
+          <span>{{ rv.user_name }}</span>
+        </div>
+
+        <!-- Bintang -->
+        <div class="review-star">
+          <ion-icon name="star" *ngFor="let s of [1,2,3,4,5]"
+            [style.color]="s <= rv.rating ? '#ffd33d' : '#ddd'"
+            style="font-size:13px;">
+          </ion-icon>
+        </div>
+
+        <p class="review-text" *ngIf="rv.review">{{ rv.review }}</p>
+        <small>{{ rv.created_at }}</small>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- TOAST NOTIFIKASI -->
+  <div class="custom-toast" [class.show]="toastVisible">
+    {{ toastMessage }}
+  </div>
+
+</ion-content>

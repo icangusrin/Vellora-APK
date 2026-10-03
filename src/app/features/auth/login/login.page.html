@@ -1,0 +1,128 @@
+<ion-content class="login-content">
+
+  <div class="login-wrapper">
+    <div class="login-header">
+
+      <ion-icon
+        name="arrow-back-outline"
+        (click)="goBack()">
+      </ion-icon>
+
+    </div>
+
+    <h1>Login</h1>
+
+    <ion-icon
+      name="bag-handle"
+      class="login-icon">
+    </ion-icon>
+
+    <div class="input-group">
+
+      <label>Email</label>
+
+      <input
+        type="email"
+        [(ngModel)]="email"
+        placeholder="Masukkan email">
+
+    </div>
+
+
+    <div class="input-group">
+
+      <label>Password</label>
+
+      <div class="password-box">
+
+        <input
+          [type]="showPassword ? 'text' : 'password'"
+          [(ngModel)]="password"
+          placeholder="Masukkan password">
+
+        <ion-icon
+          [name]="showPassword ? 'eye-off-outline' : 'eye-outline'"
+          class="toggle-password"
+          (click)="showPassword = !showPassword">
+        </ion-icon>
+
+      </div>
+
+    </div>
+
+
+    <div
+      class="forgot-password"
+      (click)="goToForgotPassword()">
+
+      Lupa Password
+
+    </div>
+
+
+    <button
+      class="login-btn"
+      (click)="login()">
+
+      Login
+
+    </button>
+
+  
+    <div class="google-wrapper">
+
+
+      <div
+        *ngIf="isWeb"
+        id="google-button"
+        style="
+          width: 100%;
+          display: flex;
+          justify-content: center;
+          margin-top: 18px;
+        ">
+      </div>
+
+
+      <button
+        *ngIf="!isWeb"
+        class="google-btn"
+        (click)="loginGoogle()">
+
+        <ion-icon
+          name="logo-google">
+        </ion-icon>
+
+        <span>
+          Login dengan Google
+        </span>
+
+      </button>
+
+    </div>
+
+
+    <div class="bottom-text">
+
+      Tidak punya akun?
+
+      <span routerLink="/auth/register">
+        Register.
+      </span>
+
+    </div>
+
+  </div>
+
+  <app-popup
+    [show]="showPopup"
+    [type]="'notice'"
+    [title]="'Notifikasi'"
+    [message]="popupMessage"
+    [icon]="'lock-closed-outline'"
+    [confirmText]="'OK'"
+    (confirmed)="closePopup()"
+    (cancelled)="closePopup()">
+  </app-popup>
+
+</ion-content>

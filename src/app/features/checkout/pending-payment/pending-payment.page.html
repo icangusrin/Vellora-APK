@@ -1,0 +1,74 @@
+<ion-content class="pending-content">
+
+  <div class="pending-wrapper">
+
+    <div class="pending-header">
+      <ion-icon name="arrow-back-outline" (click)="goBack()"></ion-icon>
+      <h2>Menunggu Pembayaran</h2>
+    </div>
+
+    <div class="icon-circle">
+      <ion-icon name="time-outline"></ion-icon>
+    </div>
+
+    <h3 class="pending-title">Selesaikan Pembayaran</h3>
+    <p class="pending-sub">
+      Bayar sebelum batas waktu berakhir
+    </p>
+
+    <div class="timer-box" [class.expired]="isExpired">
+      <p class="timer-label">Sisa Waktu</p>
+      <h2 class="timer-count">{{ countdown }}</h2>
+      <p class="timer-expired" *ngIf="isExpired">
+        ⚠️ Waktu pembayaran telah habis
+      </p>
+    </div>
+
+    <div class="total-card">
+      <span>Total Pembayaran</span>
+      <h3>{{ total }}</h3>
+    </div>
+
+    <div class="info-card" *ngIf="orderId">
+
+      <div class="info-row">
+        <span>No. Pesanan</span>
+        <strong>#{{ orderId }}</strong>
+      </div>
+
+      <div class="info-row" *ngIf="bank">
+        <span>Bank Tujuan</span>
+        <strong>{{ bank }}</strong>
+      </div>
+
+      <div class="info-row" *ngIf="method">
+        <span>Metode</span>
+        <strong>{{ method }}</strong>
+      </div>
+
+    </div>
+
+    <button
+      class="pay-btn"
+      [disabled]="isExpired"
+      (click)="goToPayment()">
+
+      <ion-icon [name]="method === 'QRIS' ? 'qr-code-outline' : 'business-outline'"></ion-icon>
+      {{ isExpired ? 'Waktu Habis' : (method === 'QRIS' ? 'Bayar via QRIS' : 'Upload Bukti Transfer') }}
+
+    </button>
+
+    <div class="nav-links">
+
+      <span (click)="goOrders()">Lihat Pesanan Saya</span>
+
+      <span (click)="goHome()">
+        <ion-icon name="home-outline"></ion-icon>
+        Kembali ke Beranda
+      </span>
+
+    </div>
+
+  </div>
+
+</ion-content>

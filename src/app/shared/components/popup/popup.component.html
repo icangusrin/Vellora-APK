@@ -1,0 +1,31 @@
+<div class="popup-overlay" *ngIf="show" (click)="onOverlayClick()">
+  <div class="popup-box" (click)="$event.stopPropagation()">
+
+    <!-- Ikon (jika ada) -->
+    <ion-icon *ngIf="icon" [name]="icon" class="popup-icon"
+      [class.icon-danger]="type === 'danger'"
+      [class.icon-notice]="type !== 'danger'">
+    </ion-icon>
+
+    <!-- Title -->
+    <p class="popup-title">{{ title }}</p>
+
+    <!-- Message (opsional) -->
+    <p class="popup-message" *ngIf="message">{{ message }}</p>
+
+    <!-- Tombol aksi -->
+    <div class="popup-actions">
+
+      <button *ngIf="cancelText" class="cancel-btn"
+        (click)="onCancel()">
+        {{ cancelText }}
+      </button>
+
+      <button class="confirm-btn" [class.danger]="type === 'danger'"
+        (click)="onConfirm()">
+        {{ confirmText || 'OK' }}
+      </button>
+
+    </div>
+  </div>
+</div>

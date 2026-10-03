@@ -1,0 +1,149 @@
+
+<ion-content fullscreen class="home-content">
+
+  <div class="search-container">
+    <div class="search-box" routerLink="/search">
+      <ion-icon name="search-outline"></ion-icon>
+      <span>Search</span>
+    </div>
+    <ion-icon class="cart-icon" name="cart-outline" (click)="goToCart()"></ion-icon>
+  </div>
+
+  <div class="banner">
+    <div class="banner-text">
+      <h2>Vellora</h2>
+      <p>Indulge in unbeatable deals across various products.</p>
+    </div>
+    <img src="https://cdn-icons-png.flaticon.com/512/891/891462.png">
+  </div>
+
+  <div class="categories">
+    <div class="category-item" (click)="goToVoucher()">
+      <div class="category-circle"><ion-icon name="ticket-outline"></ion-icon></div>
+      <p>Voucher</p>
+    </div>
+    <div class="category-item" (click)="goToCategory('Fashion')">
+      <div class="category-circle"><ion-icon name="shirt-outline"></ion-icon></div>
+      <p>Fashion</p>
+    </div>
+    <div class="category-item" (click)="goToCategory('Elektronik')">
+      <div class="category-circle"><ion-icon name="desktop-outline"></ion-icon></div>
+      <p>Elektronik</p>
+    </div>
+    <div class="category-item" (click)="goToCategory('Makanan')">
+      <div class="category-circle"><ion-icon name="fast-food-outline"></ion-icon></div>
+      <p>Makanan</p>
+    </div>
+    <div class="category-item" (click)="goToCategory('Minuman')">
+      <div class="category-circle"><ion-icon name="wine-outline"></ion-icon></div>
+      <p>Minuman</p>
+    </div>
+    <div class="category-item" (click)="goToCategory('Kesehatan')">
+      <div class="category-circle"><ion-icon name="fitness-outline"></ion-icon></div>
+      <p>Kesehatan</p>
+    </div>
+    <div class="category-item" (click)="goToCategory('Olahraga')">
+      <div class="category-circle"><ion-icon name="barbell-outline"></ion-icon></div>
+      <p>Olahraga</p>
+    </div>
+  </div>
+
+  <div class="product-grid" *ngIf="isLoading">
+    <div class="product-card skeleton-card" *ngFor="let s of skeletonItems">
+      <div class="skeleton-img"></div>
+      <div class="skeleton-line long" style="margin-top:12px;"></div>
+      <div class="skeleton-line short"></div>
+      <div class="skeleton-bottom">
+        <div class="skeleton-line tiny"></div>
+        <div class="skeleton-line tiny"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="product-grid" *ngIf="!isLoading && apiProducts.length > 0">
+
+    <div class="product-card"
+         *ngFor="let item of apiProducts"
+         (click)="openDetail(item)">
+
+      <div class="fav-btn" (click)="addToCart(item, $event)">
+        <ion-icon name="bag-add-outline"></ion-icon>
+      </div>
+
+      <img [src]="getImageUrl(item)"
+           (error)="$any($event.target).src='https://picsum.photos/300'"
+           alt="{{ item.product_name }}">
+
+      <h3>{{ item.product_name }}</h3>
+
+
+      <div class="price">{{ formatPrice(item.price) }}</div>
+
+      <div class="bottom-row">
+        <small>{{ item.stock ?? 0 }} stok</small>
+        <div class="rating" *ngIf="item.rating_avg && item.rating_avg > 0">
+          <ion-icon name="star" style="color:#ffd33d;font-size:11px;vertical-align:middle;"></ion-icon>
+          <span>{{ item.rating_avg }}</span>
+          <span class="rating-cnt">({{ item.rating_count }})</span>
+        </div>
+        <div class="rating" *ngIf="!item.rating_avg || item.rating_avg == 0">
+          <span class="no-rating">Baru</span>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <div class="empty-state" *ngIf="!isLoading && apiProducts.length === 0">
+    <p>Belum ada produk tersedia</p>
+  </div>
+
+  <div class="custom-toast" [class.show]="toastVisible">
+    {{ toastMessage }}
+  </div>
+
+</ion-content>
+
+<!--
+====================================================
+FUTURE UPDATE: Modal pilih variant sebelum add cart
+Uncomment semua bagian ini saat fitur variant aktif
+
+<div class="popup-overlay" *ngIf="showCartPopup">
+  <div class="popup-card">
+
+    <ion-icon
+      name="close-outline"
+      class="close-btn"
+      (click)="showCartPopup=false">
+    </ion-icon>
+
+    <div class="popup-product">
+      <img [src]="selectedProduct?.image">
+      <div>
+        <h3>{{ formatPrice(selectedProduct?.price) }}</h3>
+        <p>Variasi: {{ selectedVariant }}</p>
+      </div>
+    </div>
+
+    <div *ngIf="selectedProduct?.variants?.length">
+      <h4>Pilih Varian ({{ selectedProduct?.variants?.length }})</h4>
+      <div class="variant-list">
+        <button
+          *ngFor="let v of selectedProduct?.variants"
+          [class.active]="selectedVariant === v"
+          (click)="selectedVariant = v">
+          {{ v }}
+        </button>
+      </div>
+    </div>
+
+    <button class="confirm-btn" (click)="confirmAddToCart()">
+      Tambah ke Keranjang
+    </button>
+
+  </div>
+</div>
+====================================================
+-->

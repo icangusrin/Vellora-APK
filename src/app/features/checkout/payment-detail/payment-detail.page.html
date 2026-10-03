@@ -1,0 +1,151 @@
+<ion-content fullscreen class="detail-content">
+
+  <div class="detail-header">
+
+    <ion-icon
+      name="arrow-back-outline"
+      (click)="goBack()">
+    </ion-icon>
+
+    <h2>Pembayaran</h2>
+
+  </div>
+
+  <div class="payment-card">
+
+    <div class="top-section">
+
+      <div class="top-row">
+
+        <span>Total Pembayaran</span>
+
+        <h3>{{ total }}</h3>
+
+      </div>
+
+      <div class="top-row">
+
+        <span>Pembayaran dalam</span>
+
+        {{ countdown }}
+
+      </div>
+
+    </div>
+
+    <div class="bank-section">
+
+      <div class="bank-header">
+
+        <img [src]="bankLogo">
+
+        <div>
+
+          <h3>
+            Bank {{ selectedBank }}
+            (Virtual Account)
+          </h3>
+
+          <span>
+            Virtual Account
+          </span>
+
+        </div>
+
+      </div>
+
+      <div class="va-row">
+
+        <h1>{{ virtualAccount }}</h1>
+
+        <ion-icon
+          name="copy-outline"
+          (click)="copyVa()">
+        </ion-icon>
+
+      </div>
+
+      <p class="warning">
+
+        Proses Verifikasi kurang dari
+        10 menit setelah pembayaran berhasil
+
+      </p>
+
+      <p class="desc">
+
+        Bayar pesanan ke Virtual Account di atas
+        sebelum membuat pesanan kembali dengan
+        Virtual Account agar no tetap sama
+
+      </p>
+
+      <p class="desc">
+
+        Bank {{ selectedBank }}
+        mengenakan biaya transaksi Rp.1000
+
+      </p>
+
+    </div>
+
+    <div class="guide-section">
+
+      <h4>
+        Petunjuk Pembayaran mBanking
+      </h4>
+
+      <ul>
+
+        <li>
+          Login ke mBanking. Pilih payment,
+          lalu pilih e-Commerce.
+        </li>
+
+        <li>
+          Pilih Virtual Account, lalu masukkan
+          nomor Virtual Account
+          <b>{{ virtualAccount }}</b>,
+          lalu pilih lanjut.
+        </li>
+
+        <li>
+          Periksa informasi yang tertera.
+          Pastikan total tagihan dan username
+          sudah benar. Jika benar,
+          masukkan PIN lalu pilih OK.
+        </li>
+
+      </ul>
+
+    </div>
+
+  </div>
+
+  <div
+    class="copy-popup"
+    *ngIf="showCopyPopup">
+
+    <div class="popup-box">
+
+      <ion-icon
+        name="checkmark-circle-outline">
+      </ion-icon>
+
+      <span>
+        Berhasil Disalin!
+      </span>
+
+    </div>
+
+  </div>
+
+</ion-content>
+
+<div class="bottom-action">
+
+  <button (click)="confirmPayment()">
+    Saya Sudah Bayar
+  </button>
+
+</div>

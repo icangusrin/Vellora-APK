@@ -1,0 +1,133 @@
+<ion-content [fullscreen]="true" class="detail-content" [scrollEvents]="true" (ionScroll)="onScroll($event)" [class.scrolling]="isScrolling">
+
+ 
+  <div class="detail-header">
+    <div class="left">
+      <ion-icon name="arrow-back-outline" class="back-icon" (click)="goBack()"></ion-icon>
+      
+      <img [src]="chatData?.avatar || 'assets/icon/shop.png'" [alt]="chatData?.name || shopName">
+
+      <div class="info">
+        <h3>{{ chatData?.name || shopName || 'Shop' }}</h3>
+        <span>● Online</span>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="loading-wrapper" *ngIf="isLoading">
+    <div class="loading-dots">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+
+
+  <div class="chat-box" *ngIf="!isLoading">
+
+
+    <div class="chat-group" *ngFor="let group of groupedMessages">
+
+
+      <div class="day-separator">
+        <span>{{ group.dayLabel }}</span>
+      </div>
+
+      <div class="message-wrapper"
+           *ngFor="let msg of group.messages"
+           [class.user]="msg.sender === 'user'">
+
+
+        <div class="bubble" *ngIf="msg.sender === 'user'">
+
+
+          <p *ngIf="msg.text">{{ msg.text }}</p>
+
+
+          <div class="image-wrapper" *ngIf="msg.image && !msg.uploading">
+            <img
+              [src]="msg.image"
+              class="chat-image"
+              alt="Gambar Terkirim"
+              (error)="onImageError($event)"
+            >
+          </div>
+
+
+          <div class="upload-indicator" *ngIf="msg.uploading">
+            <div class="upload-preview-wrapper">
+              <img [src]="msg.image" class="chat-image uploading-blur" alt="Uploading...">
+              <div class="upload-overlay">
+                <div class="upload-spinner"></div>
+                <span>Mengirim...</span>
+              </div>
+            </div>
+          </div>
+
+          <span>
+            {{ msg.time || 'Baru saja' }}
+            <span class="pending-indicator" *ngIf="msg.pending && !msg.uploading"> ·</span>
+          </span>
+
+        </div>
+
+
+        <div class="bubble" *ngIf="msg.sender !== 'user'">
+
+
+          <div *ngIf="msg.type === 'question-box'" class="question-box">
+            <h4>Halo kak 👋<br>Ada yang bisa kami bantu?</h4>
+            <div class="question-item"
+                 *ngFor="let question of msg.questions"
+                 (click)="sendQuickMessage(question)">
+              {{ question }}
+            </div>
+          </div>
+
+  
+          <p *ngIf="msg.text">{{ msg.text }}</p>
+
+          <div class="image-wrapper" *ngIf="msg.image">
+            <img
+              [src]="msg.image"
+              class="chat-image"
+              alt="Gambar Diterima"
+              (error)="onImageError($event)"
+            >
+          </div>
+
+          <span>{{ msg.time || 'Baru saja' }}</span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div #messagesEnd></div>
+
+  </div>
+
+</ion-content>
+
+<div class="chat-input-container">
+  <div class="chat-input-bar">
+    <input
+      type="text"
+      placeholder="Tulis Pesan..."
+      [(ngModel)]="newMessage"
+      (keyup.enter)="sendMessage()"
+    >
+    
+    <div class="icons">
+      <ion-icon name="image-outline"  (click)="pickImage()"></ion-icon>
+      <ion-icon name="camera-outline" (click)="openCamera()"></ion-icon>
+      <ion-icon
+        name="send-outline"
+        class="send-active-btn"
+        [class.disabled]="isSending"
+        (click)="sendMessage()"
+      ></ion-icon>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,39 @@
+<ion-content fullscreen class="phone-content">
+
+  <div class="header">
+
+    <ion-icon
+      name="arrow-back-outline"
+      (click)="goBack()">
+    </ion-icon>
+
+    <h2>
+      Ubah no handphone
+    </h2>
+
+  </div>
+
+  <div class="email-box">
+
+    <h3>
+      Masukkan email untuk verifikasi code
+    </h3>
+
+    <label>
+      Email
+    </label>
+
+    <input
+      type="email"
+      [(ngModel)]="email">
+
+    <button
+      (click)="goToOtp()">
+
+      Konfirmasi
+
+    </button>
+
+  </div>
+
+</ion-content>

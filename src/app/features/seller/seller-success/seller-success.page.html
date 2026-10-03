@@ -1,0 +1,137 @@
+<ion-content>
+
+  <div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+
+      <ion-icon
+        name="chevron-back-outline"
+        (click)="goBack()">
+      </ion-icon>
+
+      <h2>Daftar Jadi Seller</h2>
+
+    </div>
+
+    <!-- STEP -->
+    <div class="step-wrapper">
+
+      <div class="step">
+
+        <div>1</div>
+
+        <div>2</div>
+
+        <div class="active">3</div>
+
+      </div>
+
+      <div class="step-text">
+
+        <span>Data Diri</span>
+
+        <span>Informasi Toko</span>
+
+        <span>Selesai</span>
+
+      </div>
+
+    </div>
+
+    <!-- SUCCESS -->
+    <div class="success-box">
+
+      <div class="success-icon">
+
+        <ion-icon
+          name="checkmark-outline">
+        </ion-icon>
+
+      </div>
+
+      <h1>Pendaftaran Berhasil!</h1>
+
+      <p>
+        Akun seller kamu telah berhasil dibuat.
+      </p>
+
+    </div>
+
+    <!-- SECTION -->
+    <div class="section">
+
+      <h3>Langkah selanjutnya</h3>
+
+      <p>
+        Untuk mulai mengelola toko dan produkmu,
+        login ke website khusus seller.
+      </p>
+
+      <img
+        src="assets/icon/laptop.png"
+        class="web-image">
+
+      <div class="link-box">
+        layananapp.my.id
+      </div>
+
+    </div>
+
+    <!-- EMAIL -->
+  <div class="section email-section">
+
+    <div>
+
+      <h3>Cek Email</h3>
+
+      <p>
+        Kami akan mengirimkan informasi
+        ke email yang didaftarkan.
+      </p>
+
+    </div>
+
+    <div class="email-icon">
+
+      <ion-icon
+        name="mail-outline">
+      </ion-icon>
+
+    </div>
+
+  </div>
+
+    <!-- BUTTON -->
+    <button
+      class="primary-btn"
+      (click)="finishRegister()">
+
+      Selesai
+
+    </button>
+
+  </div>
+
+  <!-- POPUP -->
+  <div
+    class="popup-overlay"
+    *ngIf="showPopup">
+
+    <div class="popup-box">
+
+      <ion-icon
+        name="checkmark-circle">
+      </ion-icon>
+
+      <h3>Pendaftaran berhasil!</h3>
+
+      <p>
+        Akun seller kamu sudah aktif.
+      </p>
+
+    </div>
+
+  </div>
+
+</ion-content>

@@ -1,0 +1,195 @@
+<ion-content>
+
+  <div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+
+      <ion-icon
+        name="chevron-back-outline"
+        (click)="goBack()">
+      </ion-icon>
+
+      <h2>
+        Daftar Jadi Seller
+      </h2>
+
+    </div>
+
+    <!-- STEP -->
+    <div class="step-wrapper">
+
+      <div class="step">
+
+        <div class="active">
+          1
+        </div>
+
+        <div>
+          2
+        </div>
+
+        <div>
+          3
+        </div>
+
+      </div>
+
+      <div class="step-text">
+
+        <span>
+          Data Diri
+        </span>
+
+        <span>
+          Informasi Toko
+        </span>
+
+        <span>
+          Selesai
+        </span>
+
+      </div>
+
+    </div>
+
+    <!-- TITLE -->
+    <div class="hero">
+
+      <div>
+
+        <h1>
+          Lengkapi data diri
+        </h1>
+
+        <p>
+          Isi data berikut dengan benar dan sesuai.
+        </p>
+
+      </div>
+
+      <img src="assets/icon/toko.png">
+
+    </div>
+
+    <!-- FORM -->
+    <div class="form">
+
+      <!-- EMAIL -->
+      <div class="input-group">
+
+        <label>
+          Email
+        </label>
+
+        <input
+          type="email"
+          [value]="email"
+          readonly>
+
+      </div>
+
+      <!-- PASSWORD -->
+      <div class="input-group">
+
+        <label>
+          Password akun
+        </label>
+
+        <div class="password-box">
+
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            [(ngModel)]="password">
+
+          <ion-icon
+            [name]="showPassword ? 'eye-off-outline' : 'eye-outline'"
+            class="toggle-password"
+            (click)="showPassword = !showPassword">
+          </ion-icon>
+
+        </div>
+
+      </div>
+
+      <!-- CONFIRM -->
+      <div class="input-group">
+
+        <label>
+          Konfirmasi Password
+        </label>
+
+        <div class="password-box">
+
+          <input
+            [type]="showConfirmPassword ? 'text' : 'password'"
+            [(ngModel)]="confirmPassword">
+
+          <ion-icon
+            [name]="showConfirmPassword ? 'eye-off-outline' : 'eye-outline'"
+            class="toggle-password"
+            (click)="showConfirmPassword = !showConfirmPassword">
+          </ion-icon>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- INFO -->
+    <div class="info-box">
+
+      <ion-icon
+        name="shield-checkmark-outline">
+      </ion-icon>
+
+      <div>
+
+        <h4>
+          Data kamu aman bersama kami!
+        </h4>
+
+        <p>
+          Informasi yang kamu berikan akan digunakan hanya untuk keperluan registrasi seller.
+        </p>
+
+      </div>
+
+    </div>
+
+    <!-- BUTTON -->
+    <button
+      class="primary-btn"
+      (click)="continueRegister()">
+
+      Lanjutkan
+
+    </button>
+
+  </div>
+
+  <!-- POPUP -->
+  <div
+    class="popup-overlay"
+    *ngIf="showPopup">
+
+    <div class="popup-box">
+
+      <p>
+        {{ popupMessage }}
+      </p>
+
+      <button
+        class="popup-button"
+        (click)="closePopup()">
+
+        OK
+
+      </button>
+
+    </div>
+
+  </div>
+
+</ion-content>

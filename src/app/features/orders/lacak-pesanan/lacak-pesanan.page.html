@@ -1,0 +1,220 @@
+<ion-content class="lacak-content">
+
+  <div class="lacak-header">
+
+    <ion-icon
+      name="arrow-back-outline"
+      (click)="goBack()">
+    </ion-icon>
+
+    <h2>Lacak Pesanan</h2>
+
+  </div>
+
+  <div class="courier-card" *ngIf="order">
+
+    <div class="courier-row">
+
+      <div class="courier-left">
+
+        <ion-icon name="bicycle-outline"></ion-icon>
+
+        <div>
+
+          <span>Kurir</span>
+
+          <p>{{ order.courier || 'Ninja Xpress' }}</p>
+
+        </div>
+
+      </div>
+
+      <div class="resi-box">
+
+        <span>No. Resi</span>
+
+        <p>{{ order.receiptNumber || '-' }}</p>
+
+      </div>
+
+    </div>
+
+    <div class="estimate-row">
+
+      <ion-icon name="time-outline"></ion-icon>
+
+      <span>Estimasi tiba</span>
+
+      <p>{{ order.estimateDate || order.estimate || '-' }}</p>
+
+    </div>
+
+  </div>
+
+  <div class="timeline-card" *ngIf="order">
+
+    <h3 class="timeline-title">Status Pesanan</h3>
+
+    <div
+      class="step"
+      [class.done]="isDone(0)"
+      [class.active]="isActive(0)">
+
+      <div class="step-left">
+
+        <div class="dot"></div>
+
+        <div class="line"></div>
+
+      </div>
+
+      <div class="step-body">
+
+        <p class="step-label">Pesanan Dibuat</p>
+
+        <small class="step-desc">
+          Pesanan berhasil dikonfirmasi
+        </small>
+
+      </div>
+
+    </div>
+
+    <div
+      class="step"
+      [class.done]="isDone(1)"
+      [class.active]="isActive(1)">
+
+      <div class="step-left">
+
+        <div class="dot">
+
+          <ion-icon
+            *ngIf="isDone(1)"
+            name="cube-outline">
+          </ion-icon>
+
+        </div>
+
+        <div class="line"></div>
+
+      </div>
+
+      <div class="step-body">
+
+        <p class="step-label">Sedang Dikemas</p>
+
+        <small class="step-desc">
+          {{ order.store || 'Toko' }} sedang mempersiapkan paket
+        </small>
+
+      </div>
+
+    </div>
+
+    <div
+      class="step"
+      [class.done]="isDone(2)"
+      [class.active]="isActive(2)">
+
+      <div class="step-left">
+
+        <div class="dot">
+
+          <ion-icon
+            *ngIf="isDone(2)"
+            name="bicycle-outline">
+          </ion-icon>
+
+        </div>
+
+        <div class="line"></div>
+
+      </div>
+
+      <div class="step-body">
+
+        <p class="step-label">Sedang Dikirim</p>
+
+        <small class="step-desc">
+          Paket dalam perjalanan ke alamat kamu
+        </small>
+
+      </div>
+
+    </div>
+
+    <div
+      class="step last"
+      [class.done]="isDone(3)"
+      [class.active]="isActive(3)">
+
+      <div class="step-left">
+
+        <div class="dot">
+
+          <ion-icon
+            *ngIf="isDone(3)"
+            name="checkmark-circle-outline">
+          </ion-icon>
+
+        </div>
+
+      </div>
+
+      <div class="step-body">
+
+        <p class="step-label">Pesanan Selesai</p>
+
+        <small class="step-desc">
+          Paket telah diterima
+        </small>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="log-card" *ngIf="logs.length > 0">
+
+    <h3 class="log-title">Riwayat Pengiriman</h3>
+
+    <div
+      class="log-item"
+      *ngFor="let log of logs; let last = last"
+      [class.log-last]="last">
+
+      <div class="log-dot"></div>
+
+      <div class="log-body">
+
+        <p class="log-label">{{ log.label }}</p>
+
+        <small class="log-desc">{{ log.desc }}</small>
+
+        <small class="log-time">{{ log.time }}</small>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="address-card" *ngIf="order">
+
+    <div class="address-title">
+
+      <ion-icon name="location-outline"></ion-icon>
+
+      <h3>Alamat Pengiriman</h3>
+
+    </div>
+
+    <p class="receiver">{{ order.receiver }}</p>
+
+    <small class="address-text">{{ order.address }}</small>
+
+  </div>
+
+</ion-content>

@@ -1,20 +1,94 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+  <div class="search-container">
+    <div class="search-box" routerLink="/search">
+      <ion-icon name="search-outline"></ion-icon>
+      <span>Cari Produk di Vellora...</span>
+    </div>
+
+    <div class="cart-icon-wrapper" (click)="goToCart()">
+      <ion-icon class="cart-icon" name="cart-outline"></ion-icon>
+    </div>
   </div>
+
+  <div class="banner">
+    <div class="banner-text">
+      <h2>Vellora</h2>
+      <p>Indulge in unbeatable deals across various products.</p>
+    </div>
+    <img src="https://cdn-icons-png.flaticon.com/512/891/891462.png" alt="Banner Image">
+  </div>
+
+  <div class="categories">
+    <div class="category-item" (click)="goToVoucher()">
+      <div class="category-circle">
+        <ion-icon name="ticket-outline"></ion-icon>
+      </div>
+      <p>Voucher</p>
+    </div>
+
+    <div class="category-item" (click)="goToCategory('Fashion')">
+      <div class="category-circle">
+        <ion-icon name="shirt-outline"></ion-icon>
+      </div>
+      <p>Fashion</p>
+    </div>
+
+    <div class="category-item" (click)="goToCategory('Beauty')">
+      <div class="category-circle">
+        <ion-icon name="sparkles-outline"></ion-icon>
+      </div>
+      <p>Beauty</p>
+    </div>
+
+    <div class="category-item" (click)="goToCategory('Elektronik')">
+      <div class="category-circle">
+        <ion-icon name="desktop-outline"></ion-icon>
+      </div>
+      <p>Elektronik</p>
+    </div>
+
+    <div class="category-item" (click)="goToCategory('Snack')">
+      <div class="category-circle">
+        <ion-icon name="fast-food-outline"></ion-icon>
+      </div>
+      <p>Snack</p>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <span [class.active]="selectedTab === 'recommended'" (click)="selectedTab = 'recommended'">
+      Recommended
+    </span>
+    <span [class.active]="selectedTab === 'hot'" (click)="selectedTab = 'hot'">
+      Hot Trending
+    </span>
+    <span [class.active]="selectedTab === 'top'" (click)="selectedTab = 'top'">
+      Top
+    </span>
+  </div>
+
+  <div class="product-grid">
+    <div class="product-card" *ngFor="let item of products" (click)="openDetail(item)">
+      <div class="fav-btn">
+        <ion-icon name="bag-add-outline" (click)="addToCart(item, $event)"></ion-icon>
+      </div>
+      <img [src]="item.image" alt="Product Image">
+      <h3>{{ item.name }}</h3>
+      <div class="price">{{ item.price }}</div>
+      <div class="bottom-row">
+        <small>{{ item.sold }}</small>
+        <div class="rating">{{ item.rating }}</div>
+      </div>
+    </div>
+  </div>
+
 </ion-content>
+
+<app-add-cart-modal
+  [product]="selectedProductForCart"
+  [variants]="variantsForCart"
+  [isOpen]="showAddCartModal"
+  (close)="closeAddCartModal()"
+  (addToCart)="onAddToCartFromModal($event)">
+</app-add-cart-modal>

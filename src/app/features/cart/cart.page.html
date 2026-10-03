@@ -1,0 +1,222 @@
+<ion-content fullscreen class="cart-content">
+
+  <div class="cart-header">
+
+    <ion-icon
+      name="arrow-back-outline"
+      (click)="goBack()">
+    </ion-icon>
+
+    <h2>
+      Keranjang Saya
+      <span>({{ cartItems().length }})</span>
+    </h2>
+
+  </div>
+
+  <div class="cart-list">
+
+    @for (group of groupedCart; track group.shop.name) {
+      <div class="cart-card">
+
+        <div class="card-top">
+
+          <div class="top-left">
+
+
+            <input
+              type="checkbox"
+              [checked]="group.storeChecked"
+              (change)="toggleStore(group.shop.name, !group.storeChecked)">
+
+            <span>
+              {{ group.shop.name }}
+            </span>
+
+            <ion-icon
+              name="chevron-forward-outline">
+            </ion-icon>
+
+          </div>
+
+        </div>
+
+
+        @for (item of group.items; track item.id) {
+          <div class="card-content">
+
+            <div class="left">
+
+
+              <input
+                type="checkbox"
+                [checked]="item.checked"
+                (change)="toggleItemChecked(item.id)">
+
+              <img [src]="item.image">
+
+            </div>
+
+            <div class="middle">
+
+              <h3>{{ item.name }}</h3>
+
+
+              <select
+                class="variant"
+                [ngModel]="item.variant"
+                (change)="changeVariant(item.id, $event)">
+
+                @for (variant of getVariants(item); track variant) {
+                  <option [ngValue]="variant">
+                    {{ variant }}
+                  </option>
+                }
+
+              </select>
+
+              <h4>{{ formatPrice(item.price) }}</h4>
+
+            </div>
+
+            <div class="right">
+
+              <button (click)="decreaseQty(item.id)">
+                -
+              </button>
+
+              <span>{{ item.qty }}</span>
+
+              <button (click)="increaseQty(item.id)">
+                +
+              </button>
+
+            </div>
+
+
+            <button
+              type="button"
+              class="delete-btn"
+              (click)="removeGroupedItem(item.id)">
+              Hapus
+            </button>
+
+          </div>
+        }
+
+      </div>
+    }
+
+  </div>
+
+</ion-content>
+
+
+<div class="cart-bottom">
+
+  <div
+    class="voucher"
+    (click)="goToVoucher()">
+
+    <div class="voucher-left">
+
+      <ion-icon
+        name="ticket-outline">
+      </ion-icon>
+
+      <span>Voucher</span>
+
+    </div>
+
+    <div class="voucher-right">
+
+
+      @if (selectedVoucher()) {
+        <div class="voucher-tag">
+
+          <span>
+            {{ selectedVoucher()!.title }}
+          </span>
+
+          <ion-icon
+            name="close-outline"
+            (click)="removeVoucher($event)">
+          </ion-icon>
+
+        </div>
+      } @else {
+        <button>
+          Lihat Semua
+        </button>
+      }
+
+      <ion-icon
+        name="chevron-forward-outline">
+      </ion-icon>
+
+    </div>
+
+  </div>
+
+  <div class="bottom-row">
+
+    <div class="left-check">
+
+
+      <input
+        type="checkbox"
+        [checked]="selectAll"
+        (change)="toggleSelectAll(!selectAll)">
+
+      <span>Semua</span>
+
+    </div>
+
+    <button
+      class="checkout-btn"
+      (click)="goToCheckout()">
+
+      Checkout
+      ({{ cartService.selectedCount() }})
+
+    </button>
+
+  </div>
+
+  <h3>
+    Total: {{ formatPrice(cartService.selectedTotalPrice()) }}
+  </h3>
+
+</div>
+
+
+@if (showLoginPopup) {
+  <div class="login-popup-overlay" (click)="closeLoginPopup()">
+    <div class="login-popup-card" (click)="$event.stopPropagation()">
+
+      <div class="popup-icon">
+        <ion-icon name="lock-closed-outline"></ion-icon>
+      </div>
+
+      <h3>Login Diperlukan</h3>
+      <p>{{ loginPopupContext === 'voucher'
+        ? 'Kamu perlu login dulu untuk melihat dan menggunakan voucher.'
+        : 'Kamu perlu login dulu untuk melanjutkan ke checkout.' }}</p>
+
+      <div class="popup-actions">
+        <button class="btn-cancel" (click)="closeLoginPopup()">
+          Nanti Saja
+        </button>
+        <button class="btn-login" (click)="goToLogin()">
+          <ion-icon name="person-outline"></ion-icon>
+          Login Sekarang
+        </button>
+      </div>
+
+    </div>
+  </div>
+}
+
+<div class="custom-toast" [class.show]="toastVisible">
+  {{ toastMessage }}
+</div>

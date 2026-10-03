@@ -1,0 +1,142 @@
+<ion-content>
+
+  <div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+
+      <ion-icon
+        name="chevron-back-outline"
+        (click)="goBack()">
+      </ion-icon>
+
+      <h2>
+        Daftar Jadi Seller
+      </h2>
+
+    </div>
+
+    <!-- STEP -->
+    <div class="step-wrapper">
+
+      <div class="step">
+
+        <div>
+          1
+        </div>
+
+        <div class="active">
+          2
+        </div>
+
+        <div>
+          3
+        </div>
+
+      </div>
+
+      <div class="step-text">
+
+        <span>
+          Data Diri
+        </span>
+
+        <span>
+          Informasi Toko
+        </span>
+
+        <span>
+          Selesai
+        </span>
+
+      </div>
+
+    </div>
+
+    <!-- HERO -->
+    <div class="hero">
+
+      <div>
+
+        <h1>
+          Lengkapi informasi toko
+        </h1>
+
+        <p>
+          Isi informasi tokomu dengan lengkap agar pembeli lebih percaya.
+        </p>
+
+      </div>
+
+      <img src="assets/icon/toko.png">
+
+    </div>
+
+    <!-- FORM -->
+    <div class="form">
+
+      <!-- NAMA USER -->
+      <label>
+        Nama User
+      </label>
+      
+      <input
+        type="text"
+        [(ngModel)]="name"
+        readonly>
+
+      <!-- NAMA TOKO -->
+      <label>
+        Nama Toko
+      </label>
+
+      <input
+        type="text"
+        [(ngModel)]="storeName">
+
+      <!-- NO HP -->
+      <label>
+        No. HP Toko
+      </label>
+
+      <input
+        type="number"
+        [(ngModel)]="phone">
+
+    </div>
+
+    <!-- BUTTON -->
+    <button
+      class="primary-btn"
+      (click)="registerSeller()">
+
+      Lanjutkan
+
+    </button>
+
+  </div>
+
+  <!-- POPUP -->
+  <div
+    class="popup-overlay"
+    *ngIf="showPopup">
+
+    <div class="popup-box">
+
+      <p>
+        {{ popupMessage }}
+      </p>
+
+      <button
+        class="popup-button"
+        (click)="closePopup()">
+
+        OK
+
+      </button>
+
+    </div>
+
+  </div>
+
+</ion-content>

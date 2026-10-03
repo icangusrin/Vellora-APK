@@ -1,0 +1,103 @@
+<ion-content fullscreen class="settings-content">
+
+  <div class="settings-header">
+
+    <ion-icon
+      name="arrow-back-outline"
+      (click)="goBack()">
+    </ion-icon>
+
+    <h2>
+      Pengaturan Akun
+    </h2>
+
+  </div>
+
+  <div class="settings-menu">
+
+    <div
+      class="menu-item"
+      (click)="goToSecurity()">
+
+      <span>
+        Keamanan & Akun
+      </span>
+
+      <ion-icon
+        name="chevron-forward-outline">
+      </ion-icon>
+
+    </div>
+
+    <div
+      class="menu-item"
+      (click)="goToAddress()">
+
+      <span>
+        Alamat Saya
+      </span>
+
+      <ion-icon
+        name="chevron-forward-outline">
+      </ion-icon>
+
+    </div>
+
+<div
+  class="menu-item"
+  (click)="goToPrivacySettings()">
+
+  <span>
+    Pengaturan Privasi
+  </span>
+
+  <ion-icon
+    name="chevron-forward-outline">
+  </ion-icon>
+
+</div>
+
+<div
+  class="menu-item"
+  (click)="goToLaporkan()">
+
+  <span>
+    Laporkan Masalah
+  </span>
+
+  <ion-icon
+    name="chevron-forward-outline">
+  </ion-icon>
+
+</div>
+
+
+
+  </div>
+  
+<div class="logout-wrapper">
+
+  <button
+    class="logout-btn"
+    (click)="showLogoutPopup = true">
+
+    Keluar
+
+  </button>
+
+</div>
+
+</ion-content>
+
+<!-- LOGOUT POPUP -->
+<app-popup
+  [show]="showLogoutPopup"
+  [type]="'confirm'"
+  [title]="'Keluar Akun?'"
+  [message]="'Apakah kamu yakin ingin keluar dari akun?'"
+  [icon]="'log-out-outline'"
+  [confirmText]="'Keluar'"
+  [cancelText]="'Batal'"
+  (confirmed)="logout()"
+  (cancelled)="closeLogoutPopup()">
+</app-popup>

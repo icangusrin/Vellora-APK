@@ -1,0 +1,37 @@
+<ion-content class="success-content">
+
+  <div class="success-wrapper">
+
+    <div class="success-icon">
+      <ion-icon name="checkmark-circle-outline"></ion-icon>
+    </div>
+
+    <ng-container *ngIf="!isManual">
+      <h2>Pesanan Berhasil! 🎉</h2>
+      <p>Pesanan #{{ orderId }} telah dikonfirmasi dan sedang diproses oleh penjual.</p>
+    </ng-container>
+
+    <ng-container *ngIf="isManual">
+      <h2>Bukti Transfer Terkirim ✅</h2>
+      <p>
+        Pesanan #{{ orderId }} sedang menunggu verifikasi pembayaran.
+        Tim kami akan memproses dalam 1×24 jam.
+      </p>
+    </ng-container>
+
+    <div class="action-buttons">
+
+      <button class="btn-orders" (click)="goToPesanan()">
+        <ion-icon name="bag-handle-outline"></ion-icon>
+        Lihat Pesanan Saya
+      </button>
+
+      <button class="btn-home" (click)="goHome()">
+        Kembali Belanja
+      </button>
+
+    </div>
+
+  </div>
+
+</ion-content>

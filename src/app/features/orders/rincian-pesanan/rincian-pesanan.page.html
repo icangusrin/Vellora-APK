@@ -1,0 +1,199 @@
+<ion-content class="rincian-content">
+
+  <div class="rincian-header">
+    <ion-icon name="arrow-back-outline" (click)="goBack()"></ion-icon>
+    <h2>Detail Pesanan</h2>
+  </div>
+
+
+  <div class="loading-state" *ngIf="isLoading">
+    <p>Memuat detail pesanan...</p>
+  </div>
+
+  <div class="error-state" *ngIf="errorMsg && !isLoading">
+    <p>{{ errorMsg }}</p>
+  </div>
+
+  <ng-container *ngIf="order && !isLoading">
+
+    <div class="status-card">
+
+      <div class="status-top">
+        <span class="status-badge" [ngClass]="order.status">
+          {{ getStatusText(order.status) }}
+        </span>
+        <span class="order-id">#{{ order.id }}</span>
+      </div>
+
+      <div class="status-info">
+        <small>{{ order.created_at | date:'d MMM yyyy, HH:mm' }}</small>
+        <small *ngIf="order.courier && order.receipt_number !== '-'">
+          Kurir: {{ order.courier }} — {{ order.receipt_number }}
+          <ion-icon
+            name="copy-outline"
+            (click)="copyText(order.receipt_number); $event.stopPropagation()">
+          </ion-icon>
+        </small>
+      </div>
+
+      <div
+        class="pay-timer"
+        *ngIf="order.status === 'pending_payment' && !isPayExpired"
+        [class.expired]="isPayExpired">
+        ⏳ Bayar dalam: <strong>{{ countdownText }}</strong>
+      </div>
+
+      <div
+        class="pay-timer expired"
+        *ngIf="order.status === 'pending_payment' && isPayExpired">
+        ⌛ Waktu pembayaran habis. Pesanan dibatalkan otomatis.
+      </div>
+
+    </div>
+
+    <div class="section-card" *ngIf="order.address">
+
+      <div class="section-title">
+        <ion-icon name="location-outline"></ion-icon>
+        Alamat Pengiriman
+      </div>
+
+      <p class="address-name">
+        {{ order.address.recipient_name }}
+        <span class="address-phone">({{ order.address.phone_number }})</span>
+      </p>
+
+      <p class="address-detail">
+        {{ order.address.full_address }}
+        <span *ngIf="order.address.detail_address">
+          , {{ order.address.detail_address }}
+        </span>
+        <span *ngIf="order.address.postal_code">
+          {{ order.address.postal_code }}
+        </span>
+      </p>
+
+    </div>
+
+    <div class="section-card">
+
+      <div class="section-title">
+        <ion-icon name="cube-outline"></ion-icon>
+        Produk yang Dibeli
+      </div>
+
+      <div
+        class="product-item"
+        *ngFor="let item of order.items">
+
+        <img
+          [src]="getImage(item.product_image)"
+          (error)="$any($event.target).src='https://picsum.photos/300'"
+          alt="produk">
+
+        <div class="product-info">
+          <h4>{{ item.product_name }}</h4>
+          <small *ngIf="item.variant">Varian: {{ item.variant }}</small>
+          <small>{{ item.store_name }}</small>
+          <p>Rp.{{ item.price.toLocaleString('id-ID') }} × {{ item.qty }}</p>
+        </div>
+
+        <span class="subtotal">
+          Rp.{{ item.subtotal.toLocaleString('id-ID') }}
+        </span>
+
+      </div>
+
+    </div>
+
+    <div class="section-card">
+
+      <div class="section-title">
+        <ion-icon name="wallet-outline"></ion-icon>
+        Ringkasan Pembayaran
+      </div>
+
+      <div class="cost-row">
+        <span>Subtotal Produk</span>
+        <span>Rp.{{ order.product_subtotal.toLocaleString('id-ID') }}</span>
+      </div>
+
+      <div class="cost-row">
+        <span>Ongkir</span>
+        <span>Rp.{{ order.shipping_cost.toLocaleString('id-ID') }}</span>
+      </div>
+
+      <div class="cost-row discount" *ngIf="order.voucher_discount > 0">
+        <span>Diskon Voucher</span>
+        <span>- Rp.{{ order.voucher_discount.toLocaleString('id-ID') }}</span>
+      </div>
+
+      <div class="cost-row total">
+        <strong>Total</strong>
+        <strong>Rp.{{ order.total_amount.toLocaleString('id-ID') }}</strong>
+      </div>
+
+      <div class="payment-method-info">
+        <span>Metode Pembayaran</span>
+        <span>
+          {{ order.payment_method }}
+          <strong *ngIf="order.bank_name"> — {{ order.bank_name }}</strong>
+        </span>
+      </div>
+
+    </div>
+
+    <div class="section-card" *ngIf="order.histories?.length > 0">
+
+      <div class="section-title">📋 Riwayat Status</div>
+
+      <div class="history-list">
+        <div class="history-item" *ngFor="let h of order.histories">
+          <div class="history-dot"></div>
+          <div>
+            <p>{{ getStatusText(h.status) }}</p>
+            <small>{{ h.description }}</small>
+            <small class="history-time">
+              {{ h.time | date:'d MMM yyyy HH:mm' }}
+            </small>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="action-btns">
+
+      <button
+        class="btn-pay"
+        *ngIf="order.status === 'pending_payment' && !isPayExpired"
+        (click)="goToPayment()">
+        💳 Bayar Sekarang
+      </button>
+
+      <button
+        class="btn-track"
+        *ngIf="order.status === 'shipped'"
+        (click)="goToLacakPesanan()">
+        📦 Lacak Pesanan
+      </button>
+
+      <button
+        class="btn-chat"
+        (click)="hubungiPenjual()">
+        <ion-icon name="chatbubble-outline"></ion-icon>
+        Hubungi Penjual
+      </button>
+
+      <button
+        class="btn-cancel"
+        *ngIf="['pending_payment','processing'].includes(order.status)"
+        (click)="cancelOrder()">
+        Batalkan Pesanan
+      </button>
+
+    </div>
+
+  </ng-container>
+
+</ion-content>

@@ -1,0 +1,291 @@
+ion-content {
+  --background: #f5f5f5;
+}
+
+.container {
+  padding-bottom: 30px;
+}
+
+.header {
+  height: 72px;
+  display: flex;
+  align-items: center;
+  padding: 0 18px;
+  border-bottom: 1px solid #e5e5e5;
+  background: white;
+}
+
+.header ion-icon {
+  font-size: 28px;
+  color: #222;
+}
+
+.header h2 {
+  margin-left: 16px;
+  font-size: 20px;
+  font-weight: 500;
+  color: #222;
+}
+
+.review-profile {
+  height: 90px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 90px;
+  background: white;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.profile-icon ion-icon {
+  font-size: 44px;
+  color: #f57f9a;
+}
+
+.review-count {
+  text-align: center;
+
+  h3 { margin: 0; font-size: 22px; font-weight: 700; }
+  p  { margin-top: 2px; font-size: 14px; color: #444; }
+}
+
+.tab-container {
+  display: flex;
+  background: white;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.tab {
+  flex: 1;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  font-size: 16px;
+  color: #222;
+  cursor: pointer;
+  position: relative;
+}
+
+.tab.active {
+  color: #f57f9a;
+  border-bottom: 2px solid #f57f9a;
+}
+
+
+.badge {
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 9px;
+  background: #f57f9a;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.state-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 16px;
+  gap: 12px;
+  color: #888;
+  font-size: 14px;
+}
+
+.state-icon {
+  font-size: 42px;
+  color: #bbb;
+}
+
+.state-icon.green {
+  color: #68bb68;
+}
+
+.spinner-ring {
+  width: 32px;
+  height: 32px;
+  border: 3px solid #f0d0d8;
+  border-top-color: #f57f9a;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+
+.review-card {
+  padding: 16px;
+  background: white;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.shop-name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  font-size: 16px;
+  font-weight: 700;
+
+  ion-icon { color: #f57f9a; }
+}
+
+.product-row {
+  display: flex;
+  gap: 12px;
+
+  img {
+    width: 64px;
+    height: 64px;
+    border-radius: 6px;
+    object-fit: cover;
+    border: 1px solid #e5e5e5;
+    flex-shrink: 0;
+  }
+}
+
+.product-info {
+  h4 { margin: 0; font-size: 15px; font-weight: 700; }
+  p  { margin: 4px 0 0; font-size: 13px; color: #555; }
+}
+
+.star-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 14px;
+  margin-left: 76px;
+
+  ion-icon {
+    font-size: 26px;
+    cursor: pointer;
+    transition: transform 0.1s;
+
+    &:active { transform: scale(1.25); }
+  }
+}
+
+.star-row.readonly ion-icon {
+  cursor: default;
+  font-size: 22px;
+}
+
+.rating-label {
+  margin-left: 6px;
+  font-size: 12px;
+  color: #f5a623;
+  font-weight: 600;
+}
+
+.rating-num {
+  margin-left: 6px;
+  font-size: 12px;
+  color: #888;
+}
+
+
+.review-card input {
+  width: 100%;
+  height: 42px;
+  margin-top: 14px;
+  border: none;
+  border-bottom: 1px solid #d9d9d9;
+  background: transparent;
+  font-size: 15px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.review-card button {
+  width: 100%;
+  height: 44px;
+  margin-top: 16px;
+  border: none;
+  border-radius: 10px;
+  background: #f8cdd7;
+  font-size: 16px;
+  font-weight: 600;
+  color: #222;
+  cursor: pointer;
+  transition: opacity 0.2s;
+
+  &.loading, &:disabled {
+    opacity: 0.6;
+    cursor: default;
+  }
+}
+
+.review-result {
+  margin: 10px 0 0;
+  font-size: 14px;
+  color: #333;
+  font-style: italic;
+  line-height: 1.5;
+}
+
+.review-date {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #888;
+}
+
+.popup-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.popup-box {
+  width: 82%;
+  background: white;
+  border-radius: 22px;
+  padding: 22px;
+  text-align: center;
+
+  h3 { margin: 0; font-size: 20px; font-weight: 700; }
+  p  { margin-top: 10px; font-size: 14px; color: #666; }
+}
+
+.popup-button {
+  display: flex;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.cancel-btn,
+.delete-popup-btn {
+  flex: 1;
+  height: 46px;
+  border: none;
+  border-radius: 14px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.cancel-btn       { background: #ececec; }
+.delete-popup-btn { background: #f8cdd7; }
+
+.ok-btn {
+  width: 100%;
+  height: 48px;
+  margin-top: 20px;
+  border: none;
+  border-radius: 14px;
+  background: #f8cdd7;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}

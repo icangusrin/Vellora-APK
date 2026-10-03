@@ -1,0 +1,41 @@
+<ion-content fullscreen class="privacy-content">
+
+  <div class="privacy-header">
+
+    <ion-icon
+      name="arrow-back-outline"
+      (click)="goBack()">
+    </ion-icon>
+
+    <h2>
+      Pengaturan Privasi
+    </h2>
+
+  </div>
+
+  <div class="privacy-wrapper">
+
+    <div class="privacy-item">
+
+      <div class="privacy-text">
+
+        <h3>
+          Notifikasi Aplikasi
+        </h3>
+
+      </div>
+
+      <div
+        class="custom-toggle"
+        [class.active]="locationNotification"
+        (click)="locationNotification = !locationNotification">
+
+        <div class="toggle-circle"></div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</ion-content>

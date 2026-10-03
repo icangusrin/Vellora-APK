@@ -1,0 +1,44 @@
+<ion-content fullscreen class="phone-content">
+
+  <div class="header">
+
+    <ion-icon
+      name="arrow-back-outline"
+      (click)="goBack()">
+    </ion-icon>
+
+    <h2>
+      Ubah no handphone
+    </h2>
+
+  </div>
+
+  <div class="otp-box">
+
+    <h3>
+      Masukkan kode OTP yang kami kirim ke email baru anda
+    </h3>
+
+    <div class="otp-inputs">
+
+      <input maxlength="1">
+      <input maxlength="1">
+      <input maxlength="1">
+      <input maxlength="1">
+
+    </div>
+
+    <p>
+      Reset code
+    </p>
+
+    <button
+      (click)="verifyOtp()">
+
+      Verifikasi
+
+    </button>
+
+  </div>
+
+</ion-content>

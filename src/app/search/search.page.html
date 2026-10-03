@@ -1,0 +1,165 @@
+<ion-content [fullscreen]="true">
+
+  <div class="search-page">
+
+    <!-- HEADER -->
+    <div class="header">
+
+      <ion-icon
+        name="arrow-back-outline"
+        class="back-icon"
+        (click)="goBack()">
+      </ion-icon>
+
+      <div class="search-bar">
+
+        <ion-icon name="search-outline"></ion-icon>
+
+        <input
+          type="text"
+          [placeholder]="activeCategory ? 'Cari di ' + activeCategory : 'Search'"
+          [(ngModel)]="searchText"
+          (input)="onTyping()"
+          (keyup.enter)="searchProduct()"
+          autofocus>
+
+      </div>
+
+    </div>
+
+    <!-- LABEL KATEGORI AKTIF -->
+    <div
+      class="category-label"
+      *ngIf="activeCategory && products.length > 0">
+
+      <span>📦 Kategori: <strong>{{ activeCategory }}</strong></span>
+
+    </div>
+
+    <!-- HISTORY -->
+    <div
+      *ngIf="
+        searchText === '' &&
+        !activeCategory &&
+        suggestions.length === 0 &&
+        products.length === 0
+      ">
+
+      <div class="trash-wrapper">
+
+        <ion-icon
+          name="trash-outline"
+          class="trash-icon"
+          (click)="clearAll()">
+        </ion-icon>
+
+      </div>
+
+      <div class="history-list">
+
+        <div
+          class="history-item"
+          *ngFor="let item of filteredHistories; let i = index"
+          (click)="openHistorySearch(item)">
+
+          <span>{{ item }}</span>
+
+          <ion-icon
+            name="close-outline"
+            class="close-icon"
+            (click)="removeItem(i); $event.stopPropagation()">
+          </ion-icon>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- SUGGESTION (dari API) -->
+    <div
+      class="suggestion-list"
+      *ngIf="suggestions.length > 0 && products.length === 0">
+
+      <div
+        class="suggestion-item"
+        *ngFor="let item of suggestions"
+        (click)="openSuggestion(item)">
+
+        {{ item.product_name }}
+
+      </div>
+
+    </div>
+
+    <!-- LOADING -->
+    <div class="loading-wrap" *ngIf="isLoading">
+      <p>Mencari produk...</p>
+    </div>
+
+    <!-- PRODUCT RESULT -->
+    <div
+      class="product-grid"
+      *ngIf="products.length > 0 && !isLoading">
+
+      <div
+        class="product-card"
+        *ngFor="let item of products"
+        (click)="openDetail(item)">
+
+        <!-- CART ICON -->
+        <div class="fav-btn">
+          <ion-icon
+            name="bag-add-outline"
+            (click)="addToCart(item, $event)">
+          </ion-icon>
+        </div>
+
+        <!-- IMAGE -->
+        <img [src]="item.image">
+
+        <!-- TITLE -->
+        <h3>{{ item.title }}</h3>
+
+        <!-- PRICE -->
+        <div class="price">{{ item.price }}</div>
+
+        <!-- BOTTOM -->
+        <div class="bottom">
+          <span>{{ item.sold }}</span>
+          <div class="stars">★★★★★</div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- EMPTY RESULT -->
+    <div
+      class="empty-result"
+      *ngIf="
+        !isLoading &&
+        (searchText !== '' || activeCategory !== '') &&
+        products.length === 0 &&
+        suggestions.length === 0
+      ">
+
+      <ion-icon name="search-outline"></ion-icon>
+
+      <h3>Produk tidak ditemukan</h3>
+
+      <p>
+        Maaf, tidak ada produk yang relevan
+        dengan pencarian anda
+      </p>
+
+    </div>
+
+    <!-- TOAST NOTIFIKASI (konsisten dengan home) -->
+    <div class="custom-toast" [class.show]="toastVisible">
+      {{ toastMessage }}
+    </div>
+
+  </div>
+
+</ion-content>

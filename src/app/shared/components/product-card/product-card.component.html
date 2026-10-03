@@ -1,0 +1,29 @@
+<div class="product-card" (click)="onCardClick()">
+<div class="fav-btn">
+
+  <ion-icon
+    name="bag-add-outline"
+    (click)="onCartClick($event); $event.stopPropagation()">
+  </ion-icon>
+
+</div>
+
+  <img [src]="product.image" [alt]="product.name">
+
+  <h3>{{ product.name }}</h3>
+
+  <div class="price">
+    {{ product.price | rupiah }}
+  </div>
+
+  <div class="bottom-row">
+
+    <small>{{ product.sold }}</small>
+
+    <div class="rating">
+      {{ ratingStars }}
+    </div>
+
+  </div>
+
+</div>

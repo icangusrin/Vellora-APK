@@ -1,0 +1,128 @@
+<ion-content [fullscreen]="true">
+
+  <div class="notif-page">
+
+    <div class="notif-header">
+
+      <h2>
+        Notifikasi
+        <span class="unread-badge" *ngIf="unreadCount > 0">
+          {{ unreadCount }}
+        </span>
+      </h2>
+
+      <div class="notif-cart" (click)="goToCart()">
+        <ion-icon name="cart-outline"></ion-icon>
+      </div>
+
+    </div>
+
+    <div class="status-header">
+
+      <h3>Status Pesanan</h3>
+
+      <div class="toolbar-actions">
+
+        <span
+          class="mark-all-btn"
+          *ngIf="unreadCount > 0"
+          (click)="markAllRead()">
+          <ion-icon name="checkmark-done-outline"></ion-icon>
+          Baca Semua
+        </span>
+
+        <div
+          class="trash-btn"
+          *ngIf="notifications.length > 0"
+          (click)="showPopup = true">
+          <ion-icon name="trash-outline"></ion-icon>
+        </div>
+
+      </div>
+
+    </div>
+
+    <ng-container *ngIf="isLoading">
+      <div class="notif-card skeleton-card" *ngFor="let s of skeletonItems">
+        <div class="sk-icon"></div>
+        <div class="sk-body">
+          <div class="sk-line long"></div>
+          <div class="sk-line short"></div>
+          <div class="sk-line tiny"></div>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="!isLoading">
+
+      <div
+        class="notif-card"
+        *ngFor="let notif of notifications"
+        [class.unread]="!notif.is_read"
+        (click)="openNotification(notif)">
+
+        <div class="unread-dot" *ngIf="!notif.is_read"></div>
+
+
+        <div class="notif-icon" [ngClass]="notif.type">
+          <ion-icon [name]="notif.icon"></ion-icon>
+        </div>
+
+
+        <div class="notif-left">
+
+          <p class="title">{{ notif.title }}</p>
+
+          <p class="message">{{ notif.message }}</p>
+
+          <div class="bottom-info">
+            <span>{{ notif.time }}</span>
+            <span class="see-detail" *ngIf="notif.data?.order_id">
+              Lihat Detail
+              <ion-icon name="chevron-forward-outline"></ion-icon>
+            </span>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="empty-state" *ngIf="notifications.length === 0">
+
+        <ion-icon name="notifications-outline"></ion-icon>
+
+        <h3>Belum ada notifikasi</h3>
+
+        <p>Notifikasi pesanan dan pembayaran akan muncul di sini</p>
+
+      </div>
+
+    </ng-container>
+
+  </div>
+
+  <div class="popup-overlay" *ngIf="showPopup" (click)="showPopup = false">
+
+    <div class="popup-card" (click)="$event.stopPropagation()">
+
+      <div class="popup-icon">
+        <ion-icon name="trash-outline"></ion-icon>
+      </div>
+
+      <h3>Hapus semua<br>notifikasi?</h3>
+
+      <p>Semua notifikasi akan dihapus secara permanen.</p>
+
+      <div class="popup-buttons">
+
+        <button class="btn-batal" (click)="showPopup = false">Batal</button>
+
+        <button class="btn-hapus" (click)="deleteAllNotifications()">Hapus</button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</ion-content>

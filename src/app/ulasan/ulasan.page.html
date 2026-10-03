@@ -1,0 +1,162 @@
+<ion-content>
+  <div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+      <ion-icon name="arrow-back-outline" (click)="goBack()"></ion-icon>
+      <h2>Penilaian Saya</h2>
+    </div>
+
+    <!-- PROFILE -->
+    <div class="review-profile">
+      <div class="profile-icon">
+        <ion-icon name="person"></ion-icon>
+      </div>
+      <div class="review-count">
+        <h3>{{ totalReviews }}</h3>
+        <p>Ulasan</p>
+      </div>
+    </div>
+
+    <!-- TAB -->
+    <div class="tab-container">
+      <div class="tab" [class.active]="activeTab === 'belum'" (click)="activeTab='belum'">
+        Belum Dinilai
+        <span class="badge" *ngIf="pendingItems.length > 0">{{ pendingItems.length }}</span>
+      </div>
+      <div class="tab" [class.active]="activeTab === 'penilaian'" (click)="activeTab='penilaian'">
+        Penilaian Saya
+      </div>
+    </div>
+    <div *ngIf="activeTab === 'belum'">
+
+      <!-- LOADING -->
+      <div class="state-wrap" *ngIf="isLoadingPending">
+        <div class="spinner-ring"></div>
+        <p>Memuat data pesanan...</p>
+      </div>
+
+      <!-- EMPTY -->
+      <div class="state-wrap" *ngIf="!isLoadingPending && pendingItems.length === 0">
+        <ion-icon name="checkmark-circle-outline" class="state-icon green"></ion-icon>
+        <p>Tidak ada yang bisa dinilai!</p>
+      </div>
+
+      <!-- CARD PER ITEM -->
+      <div class="review-card" *ngFor="let item of pendingItems">
+
+        <!-- TOKO -->
+        <div class="shop-name">
+          <ion-icon name="storefront"></ion-icon>
+          <span>{{ item.store_name }}</span>
+        </div>
+
+        <!-- PRODUK -->
+        <div class="product-row">
+          <img [src]="item.product_image"
+               [alt]="item.product_name"
+               (error)="$any($event.target).src='https://picsum.photos/300'">
+          <div class="product-info">
+            <h4>{{ item.product_name }}</h4>
+            <p *ngIf="item.variant">Varian: {{ item.variant }}</p>
+            <p>{{ item.qty }}x {{ formatPrice(item.price) }}</p>
+          </div>
+        </div>
+
+        <!-- BINTANG INPUT -->
+        <div class="star-row">
+          <ion-icon
+            *ngFor="let s of stars"
+            name="star"
+            [style.color]="s <= ratings[item.order_item_id] ? '#ffd33d' : '#d9d9d9'"
+            (click)="setRating(item.order_item_id, s)">
+          </ion-icon>
+          <span class="rating-label" *ngIf="ratings[item.order_item_id]">
+            {{ getLabel(item.order_item_id) }}
+          </span>
+        </div>
+
+        <!-- KOMENTAR -->
+        <input
+          type="text"
+          [(ngModel)]="comments[item.order_item_id]"
+          placeholder="Ceritakan pengalamanmu... (opsional)">
+
+        <!-- TOMBOL KIRIM -->
+        <button
+          [class.loading]="submitting[item.order_item_id]"
+          [disabled]="submitting[item.order_item_id]"
+          (click)="submitReview(item)">
+          <span *ngIf="!submitting[item.order_item_id]">Kirim Penilaian</span>
+          <span *ngIf="submitting[item.order_item_id]">Mengirim...</span>
+        </button>
+
+      </div>
+    </div>
+
+
+    <div *ngIf="activeTab === 'penilaian'">
+
+      <!-- LOADING -->
+      <div class="state-wrap" *ngIf="isLoadingMyReview">
+        <div class="spinner-ring"></div>
+        <p>Memuat ulasan...</p>
+      </div>
+
+      <!-- EMPTY -->
+      <div class="state-wrap" *ngIf="!isLoadingMyReview && myReviews.length === 0">
+        <ion-icon name="time-outline" class="state-icon"></ion-icon>
+        <p>Belum ada ulasan yang dikirim</p>
+      </div>
+
+      <!-- CARD HASIL REVIEW -->
+      <div class="review-card" *ngFor="let rv of myReviews">
+
+        <!-- TOKO -->
+        <div class="shop-name">
+          <ion-icon name="storefront"></ion-icon>
+          <span>{{ rv.store_name ?? 'Toko' }}</span>
+        </div>
+
+        <!-- PRODUK -->
+        <div class="product-row">
+          <img [src]="rv.product_image"
+               [alt]="rv.product_name"
+               (error)="$any($event.target).src='https://picsum.photos/300'">
+          <div class="product-info">
+            <h4>{{ rv.product_name }}</h4>
+            <p *ngIf="rv.variant">Varian: {{ rv.variant }}</p>
+            <p>{{ rv.qty }}x {{ formatPrice(rv.price) }}</p>
+          </div>
+        </div>
+
+        <!-- BINTANG HASIL (readonly) -->
+        <div class="star-row readonly">
+          <ion-icon
+            *ngFor="let s of stars"
+            name="star"
+            [style.color]="s <= rv.rating ? '#ffd33d' : '#d9d9d9'">
+          </ion-icon>
+          <span class="rating-num">{{ rv.rating }}/5</span>
+        </div>
+
+        <!-- TEKS ULASAN -->
+        <p class="review-result" *ngIf="rv.review">"{{ rv.review }}"</p>
+
+        <p class="review-date">{{ rv.created_at }}</p>
+
+      </div>
+    </div>
+
+  </div><!-- /container -->
+
+  <!-- POPUP: rating kosong -->
+  <div class="popup-overlay" *ngIf="showWarningPopup">
+    <div class="popup-box">
+      <h3>Penilaian Kosong</h3>
+      <p>Pilih bintang dulu sebelum mengirim penilaian.</p>
+      <button class="ok-btn" (click)="showWarningPopup=false">Oke</button>
+    </div>
+  </div>
+
+</ion-content>

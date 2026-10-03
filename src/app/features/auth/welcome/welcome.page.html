@@ -1,0 +1,320 @@
+<ion-content [fullscreen]="true" [scrollY]="false" class="welcome-root">
+
+  <div class="blob blob-tl" aria-hidden="true"></div>
+  <div class="blob blob-br" aria-hidden="true"></div>
+
+
+  <div class="slider">
+    <div class="slider-track" #sliderTrack>
+
+
+        <section class="slide slide-center">
+
+     
+          <div class="badge-float badge-left" aria-hidden="true">
+            <ion-icon name="bag-handle-outline"></ion-icon>
+          </div>
+
+          <div class="badge-float badge-right" aria-hidden="true">
+            <ion-icon name="heart"></ion-icon>
+          </div>
+
+          <div class="slide-inner">
+
+            <div class="logo-card">
+              <img
+                src="assets/icon/vellora-logo.png"
+                alt="Vellora logo"
+                class="logo-float"
+              />
+            </div>
+
+            <h1 class="title">
+              Selamat Datang<br>di <span class="grad">Vellora</span>
+            </h1>
+
+            <p class="subtitle">
+              Temukan produk favorit, berbelanja dengan mudah,
+              dan mulai berjualan dalam satu aplikasi.
+            </p>
+
+            <div class="dots">
+              <span class="dot" [class.active]="currentSlide === 0"></span>
+              <span class="dot" [class.active]="currentSlide === 1"></span>
+              <span class="dot" [class.active]="currentSlide === 2"></span>
+            </div>
+
+            <button class="btn-grad" (click)="nextSlide()">
+              Mulai Sekarang
+              <ion-icon
+                name="arrow-forward-outline"
+                aria-hidden="true">
+              </ion-icon>
+            </button>
+
+            <p class="alt-action">
+              Sudah punya akun?
+              <span (click)="goToLogin()">Masuk</span>
+            </p>
+
+          </div>
+
+        </section>
+
+
+      <section class="slide slide-center">
+        <div class="slide-inner">
+
+          <div class="logo-card">
+            <img
+              src="assets/icon/vellora-logo.png" alt="Vellora logo" class="logo-float"/>
+          </div>
+
+          <h1 class="title">
+            Tentang <span class="grad">Vellora</span>
+          </h1>
+
+          <p class="subtitle">
+            Vellora adalah aplikasi social commerce yang menghubungkan
+            pembeli dan penjual dalam satu platform. Nikmati pengalaman
+            belanja yang mudah, aman, dan nyaman, serta kesempatan untuk
+            membuka toko dan menjual produk Anda kapan saja.
+          </p>
+
+          <div class="chip-row">
+            <div class="chip">
+              <ion-icon name="shield-checkmark-outline" aria-hidden="true"></ion-icon>
+              <span>Aman &amp; Terpercaya</span>
+            </div>
+            <div class="chip">
+              <ion-icon name="flash-outline" aria-hidden="true"></ion-icon>
+              <span>Belanja Cepat</span>
+            </div>
+            <div class="chip">
+              <ion-icon name="people-outline" aria-hidden="true"></ion-icon>
+              <span>Social Commerce</span>
+            </div>
+          </div>
+
+          <div class="dots">
+            <span class="dot" [class.active]="currentSlide === 0"></span>
+            <span class="dot" [class.active]="currentSlide === 1"></span>
+            <span class="dot" [class.active]="currentSlide === 2"></span>
+          </div>
+
+          <button class="btn-grad" (click)="nextSlide()">
+            Lanjut
+            <ion-icon name="arrow-forward-outline" aria-hidden="true"></ion-icon>
+          </button>
+
+          <p class="version-label">
+            Versi 1.0.5 &copy; 2026 Vellora. All Rights Reserved.
+          </p>
+
+        </div>
+      </section>
+
+
+      <section class="slide slide-privacy">
+
+        <!-- FIXED HEADER -->
+        <header class="prv-header">
+          <div class="prv-logo">
+            <img src="assets/icon/vellora-logo.png" alt="Vellora" />
+          </div>
+          <div class="prv-header-info">
+            <h2 class="prv-title">Privacy Policy</h2>
+            <span class="prv-updated">Terakhir diperbarui: Juni 2026</span>
+          </div>
+        </header>
+
+
+        <main class="prv-body" #privacyBody (scroll) ="onPrivacyScroll($event)">
+
+          <p class="prv-intro">
+            Selamat datang di Vellora. Privasi Anda penting bagi kami.
+            Kebijakan Privasi ini menjelaskan bagaimana Vellora mengumpulkan,
+            menggunakan, menyimpan, dan melindungi informasi pengguna saat
+            menggunakan aplikasi Vellora.
+          </p>
+
+          <div class="prv-block">
+            <h3>1. Informasi yang Kami Kumpulkan</h3>
+            <p>Saat menggunakan aplikasi Vellora, kami dapat mengumpulkan:</p>
+            <ul>
+              <li>Nama lengkap</li>
+              <li>Alamat email</li>
+              <li>Nomor telepon</li>
+              <li>Alamat pengiriman</li>
+              <li>Foto profil (jika diunggah)</li>
+              <li>Informasi toko dan produk bagi penjual</li>
+              <li>Riwayat transaksi dan pesanan</li>
+              <li>Data penggunaan aplikasi</li>
+              <li>Informasi perangkat dan sistem operasi</li>
+            </ul>
+          </div>
+
+          <div class="prv-block">
+            <h3>2. Penggunaan Informasi</h3>
+            <p>Informasi yang dikumpulkan digunakan untuk:</p>
+            <ul>
+              <li>Membuat dan mengelola akun pengguna</li>
+              <li>Memproses pesanan dan transaksi</li>
+              <li>Menyediakan layanan marketplace</li>
+              <li>Menghubungkan pembeli dan penjual</li>
+              <li>Menampilkan riwayat transaksi</li>
+              <li>Mengirim notifikasi terkait pesanan dan akun</li>
+              <li>Meningkatkan kualitas layanan dan keamanan aplikasi</li>
+              <li>Mencegah aktivitas yang melanggar hukum atau kebijakan platform</li>
+            </ul>
+          </div>
+
+          <div class="prv-block">
+            <h3>3. Kamera dan Media</h3>
+            <p>Vellora dapat meminta akses ke kamera atau galeri perangkat untuk:</p>
+            <ul>
+              <li>Mengunggah foto profil</li>
+              <li>Mengunggah foto produk</li>
+              <li>Mengunggah gambar yang diperlukan dalam fitur tertentu</li>
+            </ul>
+            <p>
+              Akses tersebut hanya digunakan sesuai tindakan yang dilakukan
+              pengguna dan tidak digunakan tanpa persetujuan pengguna.
+            </p>
+          </div>
+
+          <div class="prv-block">
+            <h3>4. Penyimpanan dan Keamanan Data</h3>
+            <p>
+              Kami berupaya melindungi informasi pengguna dengan langkah-langkah
+              keamanan yang wajar untuk mencegah akses, penggunaan, atau
+              pengungkapan yang tidak sah. Namun, tidak ada metode transmisi atau
+              penyimpanan data yang dapat dijamin 100% aman.
+            </p>
+          </div>
+
+          <div class="prv-block">
+            <h3>5. Berbagi Informasi</h3>
+            <p>
+              Vellora tidak menjual data pribadi pengguna kepada pihak ketiga.
+              Informasi tertentu dapat dibagikan apabila:
+            </p>
+            <ul>
+              <li>Diperlukan untuk memproses transaksi</li>
+              <li>Diperlukan oleh penyedia layanan pembayaran</li>
+              <li>Diperlukan berdasarkan hukum atau permintaan resmi dari pihak berwenang</li>
+              <li>Diperlukan untuk melindungi hak, keamanan, dan operasional Vellora</li>
+            </ul>
+          </div>
+
+          <div class="prv-block">
+            <h3>6. Hak Pengguna</h3>
+            <p>Pengguna berhak untuk:</p>
+            <ul>
+              <li>Melihat informasi akun yang dimiliki</li>
+              <li>Memperbarui informasi akun</li>
+              <li>Menghapus akun sesuai ketentuan yang berlaku</li>
+              <li>Menghubungi kami terkait penggunaan data pribadi</li>
+            </ul>
+          </div>
+
+          <div class="prv-block">
+            <h3>7. Cookies dan Teknologi Serupa</h3>
+            <p>
+              Vellora dapat menggunakan cookies, token autentikasi, atau teknologi
+              serupa untuk menjaga sesi login, meningkatkan pengalaman pengguna,
+              dan mendukung fungsi aplikasi.
+            </p>
+          </div>
+
+          <div class="prv-block">
+            <h3>8. Perubahan Kebijakan Privasi</h3>
+            <p>
+              Kami dapat memperbarui Kebijakan Privasi ini dari waktu ke waktu.
+              Perubahan akan berlaku setelah dipublikasikan melalui aplikasi
+              atau media resmi Vellora.
+            </p>
+          </div>
+
+          <div class="prv-block">
+            <h3>9. Persetujuan Pengguna</h3>
+            <p>
+              Dengan menggunakan aplikasi Vellora, Anda menyatakan telah membaca,
+              memahami, dan menyetujui Kebijakan Privasi ini.
+            </p>
+          </div>
+
+          <div class="prv-block">
+            <h3>10. Hubungi Kami</h3>
+            <p>
+              Jika Anda memiliki pertanyaan mengenai Kebijakan Privasi ini,
+              silakan hubungi:
+            </p>
+            <p>
+              <strong>Vellora Marketplace</strong><br />
+              Email:
+              <a href="mailto:applayanan.com" class="prv-link">applayanan.com</a>
+              <br />
+              Website:
+              <a
+                href="https://layananapp.my.id"
+                class="prv-link"
+                target="_blank"
+                rel="noopener"
+              >layananapp.my.id</a>
+            </p>
+          </div>
+
+          <p class="prv-closing">
+            Dengan melanjutkan penggunaan aplikasi Vellora, Anda menyetujui
+            pengumpulan dan penggunaan informasi sesuai dengan Kebijakan Privasi ini.
+          </p>
+
+        </main>
+
+
+        <footer class="prv-footer">
+
+          <div class="dots">
+            <span class="dot" [class.active]="currentSlide === 0"></span>
+            <span class="dot" [class.active]="currentSlide === 1"></span>
+            <span class="dot" [class.active]="currentSlide === 2"></span>
+          </div>
+
+          <div class="agree-row">
+            <ion-checkbox
+              [(ngModel)]="agreePrivacy" [disabled]="!hasScrolledToBottom"
+              class="agree-check">
+            </ion-checkbox>
+            <span class="agree-label">
+              <ng-container *ngIf="!hasScrolledToBottom">
+                Scroll sampai akhir Kebijakan Privasi untuk mengaktifkan persetujuan.
+              </ng-container>
+
+              <ng-container *ngIf="hasScrolledToBottom">
+                Saya setuju dengan
+                <a class="prv-link" (click)="openPrivacyPolicy()">
+                  Kebijakan Privasi
+                </a>
+                Vellora
+              </ng-container>
+            </span>
+          </div>
+
+          <button
+            class="btn-grad"
+            [class.btn-off]="!agreePrivacy"
+            (click)="agreePrivacy && goToHome()"
+          >
+            Setuju &amp; Mulai Belanja
+            <ion-icon name="arrow-forward-outline" aria-hidden="true"></ion-icon>
+          </button>
+
+        </footer>
+
+      </section>
+
+    </div><!-- /slider-track -->
+  </div><!-- /slider -->
+
+</ion-content>

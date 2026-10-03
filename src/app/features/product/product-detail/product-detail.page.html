@@ -1,0 +1,380 @@
+<ion-content fullscreen class="detail-content">
+
+
+  <div class="detail-header">
+
+    <ion-icon
+      name="arrow-back-outline"
+      (click)="goBack()">
+    </ion-icon>
+
+    <div class="header-right">
+
+      <ion-icon
+        name="share-social-outline"
+        (click)="shareProduct()">
+      </ion-icon>
+
+      <ion-icon
+        name="cart-outline"
+        (click)="goToCart()">
+      </ion-icon>
+
+    </div>
+
+  </div>
+
+  <div class="image-wrapper">
+
+    <img
+      [src]="product?.image"
+      class="product-image">
+
+  </div>
+
+  <div class="detail-container">
+
+    <!-- HARGA -->
+    <h2 class="price">
+      {{ product?.price }}
+    </h2>
+    <div class="title-row">
+      <p class="title">{{ product?.name }}</p>
+      <span
+        class="stock-inline"
+        [class.stock-inline--empty]="(product?.stock ?? product?.quantity ?? 0) <= 0">
+        {{ (product?.stock ?? product?.quantity ?? 0) > 0
+          ? 'Stok ' + (product?.stock ?? product?.quantity)
+          : 'Habis' }}
+      </span>
+    </div>
+
+    <hr>
+
+    <div class="description-header">
+
+      <span>
+        Deskripsi
+      </span>
+
+      <div
+        class="more-text"
+        (click)="toggleDescription()">
+
+        {{ showFullDescription ? 'Sembunyikan' : 'Selengkapnya' }}
+
+        <ion-icon
+          [name]="showFullDescription
+          ? 'chevron-down-outline'
+          : 'chevron-forward-outline'">
+        </ion-icon>
+
+      </div>
+
+    </div>
+
+    <div
+      class="description-content"
+      *ngIf="showFullDescription">
+
+      <div class="desc-info-table">
+        <div class="desc-info-row">
+          <span class="desc-info-label">Produk</span>
+          <span class="desc-info-value">{{ product?.name }}</span>
+        </div>
+        <div class="desc-info-row">
+          <span class="desc-info-label">Harga</span>
+          <span class="desc-info-value desc-info-price">{{ product?.price }}</span>
+        </div>
+        <div class="desc-info-row">
+          <span class="desc-info-label">Stok</span>
+          <span class="desc-info-value"
+            [class.desc-info-empty]="(product?.stock ?? product?.quantity ?? 0) <= 0">
+            {{ (product?.stock ?? product?.quantity ?? 0) > 0
+              ? (product?.stock ?? product?.quantity) + ' barang'
+              : 'Habis' }}
+          </span>
+        </div>
+      </div>
+
+      <div class="desc-divider"></div>
+
+      <p class="desc-text">{{ productDescription }}</p>
+
+    </div>
+
+    <hr>
+
+    <div class="menu-row">
+
+      <span>
+        {{ variants.length }} opsi tersedia
+      </span>
+
+      <ion-icon
+        name="chevron-forward-outline"
+        (click)="toggleVariants()">
+      </ion-icon>
+
+    </div>
+
+    <div class="variant-wrapper">
+
+      <div
+        class="variant"
+        *ngFor="let item of variants"
+        [class.active]="selectedVariant === item"
+        (click)="selectVariant(item)">
+
+        {{ item }}
+
+      </div>
+
+    </div>
+
+    <hr>
+
+    <div
+      class="shop-row"
+      (click)="goToShop()">
+
+      <div class="shop-left">
+
+        <img
+          [src]="
+            shop?.avatar ||
+            'assets/icon/shop.png'
+          "
+          class="shop-image"
+          [alt]="
+            shop?.name || 'Shop'
+          ">
+
+        <span>
+          {{
+            shop?.name ||
+            'Shop'
+          }}
+        </span>
+
+      </div>
+
+      <ion-icon
+        name="chevron-forward-outline">
+      </ion-icon>
+
+    </div>
+
+    <hr>
+
+    <div class="reviews-section">
+
+      <div class="reviews-header">
+
+        <span class="reviews-title">Ulasan Pembeli</span>
+
+        <span class="reviews-total" *ngIf="ratingCount > 0">
+          {{ ratingCount }} ulasan
+        </span>
+
+      </div>
+
+      <div class="rating-summary" *ngIf="ratingAvg && ratingAvg > 0">
+
+        <div class="summary-score">
+
+          <div class="score-number">{{ ratingAvg }}</div>
+
+          <div class="score-stars">
+            <ion-icon
+              *ngFor="let s of stars"
+              name="star"
+              [style.color]="s <= ratingAvg! ? '#ffd33d' : '#e0e0e0'"
+              style="font-size: 13px;">
+            </ion-icon>
+          </div>
+
+          <div class="score-label">dari 5</div>
+
+        </div>
+
+        <div class="summary-bars">
+
+          <div class="bar-row" *ngFor="let n of [5,4,3,2,1]">
+
+            <span class="bar-num">{{ n }}</span>
+
+            <ion-icon
+              name="star"
+              style="color: #ffd33d; font-size: 10px; flex-shrink: 0;">
+            </ion-icon>
+
+            <div class="bar-bg">
+              <div
+                class="bar-fill"
+                [style.width.%]="getBarPct(n)">
+              </div>
+            </div>
+
+            <span class="bar-count">{{ ratingDist[n] }}</span>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="reviews-loading" *ngIf="isLoadingReviews">
+        <div class="rv-spinner"></div>
+        <p>Memuat ulasan...</p>
+      </div>
+
+      <div
+        class="reviews-empty"
+        *ngIf="!isLoadingReviews && reviews.length === 0">
+        Belum ada ulasan untuk produk ini.
+      </div>
+
+      <div
+        class="review-list"
+        *ngIf="!isLoadingReviews && reviews.length > 0">
+
+        <div
+          class="review-item"
+          *ngFor="let rv of reviews">
+
+          <div class="reviewer-row">
+
+            <img
+              [src]="rv.user_photo"
+              class="reviewer-avatar"
+              (error)="$any($event.target).src=
+                'https://cdn-icons-png.flaticon.com/512/149/149071.png'">
+
+            <div class="reviewer-meta">
+              <span class="reviewer-name">{{ rv.user_name }}</span>
+              <span class="reviewer-date">{{ rv.created_at }}</span>
+            </div>
+
+          </div>
+
+          <div class="rv-stars">
+            <ion-icon
+              *ngFor="let s of stars"
+              name="star"
+              [style.color]="s <= rv.rating ? '#ffd33d' : '#e0e0e0'"
+              style="font-size: 13px;">
+            </ion-icon>
+          </div>
+
+          <p class="rv-text" *ngIf="rv.review">
+            {{ rv.review }}
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="custom-toast" [class.show]="toastVisible">
+    {{ toastMessage }}
+  </div>
+
+</ion-content>
+
+<div
+  class="popup-overlay"
+  *ngIf="showVariants">
+
+  <div class="popup-card">
+
+    <ion-icon
+      name="close-outline"
+      class="close-btn"
+      (click)="showVariants = false">
+    </ion-icon>
+
+    <div class="popup-product">
+
+      <img
+        [src]="product?.image">
+
+      <div>
+
+        <h3>
+          {{ product?.price }}
+        </h3>
+
+        <p>
+          Variasi:
+          {{ selectedVariant }}
+        </p>
+
+      </div>
+
+    </div>
+
+    <div *ngIf="variants?.length">
+
+      <h4>
+        {{ variantTitle }}
+        ({{ variants.length }})
+      </h4>
+
+      <div class="variant-list">
+
+        <button
+          *ngFor="let variant of variants"
+          [class.active]="selectedVariant === variant"
+          (click)="selectVariant(variant)">
+
+          {{ variant }}
+
+        </button>
+
+      </div>
+
+    </div>
+
+    <button
+      class="confirm-btn"
+      (click)="confirmAddToCart()">
+
+      Tambah ke Keranjang
+
+    </button>
+
+  </div>
+
+</div>
+
+<div class="bottom-bar">
+
+  <div class="bottom-icons">
+
+    <ion-icon
+      name="chatbubble-outline"
+      (click)="openChat()">
+    </ion-icon>
+
+    <ion-icon
+      name="cart-outline"
+      (click)="toggleVariants()">
+    </ion-icon>
+
+  </div>
+
+  <button
+    class="buy-btn"
+    (click)="buyNow()">
+
+    <span>Beli Sekarang</span>
+
+    <small>{{ product?.price }}</small>
+
+  </button>
+
+</div>

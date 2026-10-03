@@ -1,0 +1,85 @@
+<ion-content fullscreen>
+
+  <div class="top-bar">
+
+
+    <ion-icon
+      name="arrow-back-outline"
+      class="back-icon"
+      (click)="goBack()">
+    </ion-icon>
+
+
+    <div class="search-box">
+
+      <ion-icon
+        name="search-outline"
+        class="search-icon">
+      </ion-icon>
+
+      <input
+        type="text"
+        [placeholder]="categoryName"
+        [(ngModel)]="searchText"
+        (input)="searchProduct()">
+
+    </div>
+
+  </div>
+
+
+  <div class="product-grid">
+
+    @for (product of products; track product.id) {
+      <div
+        class="product-card"
+        (click)="openDetail(product)">
+
+        <div class="image-wrapper">
+
+          <img
+            [src]="product.image"
+            [alt]="product.name">
+
+          <div class="fav-btn">
+
+            <ion-icon
+              name="bag-handle-outline"
+              (click)="addToCart(product, $event)">
+            </ion-icon>
+
+          </div>
+
+        </div>
+
+        <h3>
+          {{ product.name }}
+        </h3>
+
+        <div class="price">
+          {{ formatPrice(product.price) }}
+        </div>
+
+
+        <div class="bottom-row">
+
+          <small>
+            {{ product.sold }}
+          </small>
+
+          <div class="rating">
+            <ion-icon name="star"></ion-icon>
+            <ion-icon name="star"></ion-icon>
+            <ion-icon name="star"></ion-icon>
+            <ion-icon name="star"></ion-icon>
+            <ion-icon name="star"></ion-icon>
+          </div>
+
+        </div>
+
+      </div>
+    }
+
+  </div>
+
+</ion-content>

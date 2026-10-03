@@ -1,0 +1,122 @@
+<ion-content class="qris-content">
+
+  <div class="qris-header">
+    <ion-icon name="arrow-back-outline" (click)="goBack()"></ion-icon>
+    <h2>Bayar via QRIS</h2>
+  </div>
+
+  <div *ngIf="isLoading" class="loading-wrap">
+    <ion-spinner name="crescent" color="primary"></ion-spinner>
+    <p>Memuat QR Code...</p>
+  </div>
+
+  <div *ngIf="errorMsg && !isLoading" class="error-wrap">
+    <p>{{ errorMsg }}</p>
+    <ion-button fill="outline" (click)="fetchQrisFromApi()">
+      <ion-icon name="refresh-outline" slot="start"></ion-icon>
+      Coba Lagi
+    </ion-button>
+  </div>
+
+  <div *ngIf="!isLoading">
+
+
+    <div class="timer-card" [class.expired]="isExpired">
+      <p class="timer-label">Selesaikan pembayaran dalam</p>
+      <h2 class="timer-value">{{ countdown }}</h2>
+      <small *ngIf="isExpired" class="timer-expired-text">⏱ Waktu pembayaran habis</small>
+    </div>
+
+    <div *ngIf="!isExpired" class="qr-card">
+      <p class="qr-scan-hint">Scan QR dengan aplikasi bank atau e-wallet manapun</p>
+
+
+      <img
+        *ngIf="qrisImageUrl"
+        [src]="qrisImageUrl"
+        alt="QRIS Code"
+        class="qr-image"
+        (error)="errorMsg='QR Code gagal dimuat'"
+      />
+
+      <div *ngIf="!qrisImageUrl" class="qr-placeholder">
+        <ion-icon name="qr-code-outline"></ion-icon>
+      </div>
+
+      <p class="qr-total-label">Total Pembayaran</p>
+      <p class="qr-total-value">{{ total }}</p>
+    </div>
+
+    <div *ngIf="hasBreakdown && !isExpired" class="section-card">
+      <div class="summary-card">
+        <p class="summary-title">Rincian Pembayaran</p>
+
+        <div class="summary-row">
+          <span class="row-label">Harga Barang</span>
+          <span class="row-value">Rp.{{ subtotal.toLocaleString('id-ID') }}</span>
+        </div>
+
+        <div class="summary-row">
+          <span class="row-label">Ongkos Kirim</span>
+          <span class="row-value">Rp.{{ shippingCost.toLocaleString('id-ID') }}</span>
+        </div>
+
+        <div class="summary-row discount-row" *ngIf="discount > 0">
+          <span class="row-label">Diskon Voucher</span>
+          <span class="row-value">- Rp.{{ discount.toLocaleString('id-ID') }}</span>
+        </div>
+
+        <div class="summary-row fee-row">
+          <span class="row-label">Biaya QRIS</span>
+          <span class="row-value">+ Rp.{{ gatewayFee.toLocaleString('id-ID') }}</span>
+        </div>
+
+        <div class="summary-divider"></div>
+
+        <div class="summary-row total-row">
+          <span class="row-label">Total Bayar</span>
+          <span class="row-value">{{ total }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="!isExpired" class="section-card">
+      <div class="steps-card">
+        <p class="steps-title">Cara Bayar</p>
+        <ul class="steps-list">
+          <li>Buka aplikasi bank atau e-wallet (GoPay, OVO, Dana, dll)</li>
+          <li>Pilih menu <strong>Scan QR / QRIS</strong></li>
+          <li>Scan QR Code di atas</li>
+          <li>Pastikan nominal sesuai, lalu <strong>konfirmasi pembayaran</strong></li>
+        </ul>
+      </div>
+    </div>
+
+  
+    <div *ngIf="isExpired" class="expired-wrap">
+      <p>
+        Waktu pembayaran sudah habis.<br>
+        Silakan buat pesanan baru atau hubungi CS jika kamu sudah melakukan pembayaran.
+      </p>
+      <ion-button routerLink="/orders" fill="outline">
+        Lihat Pesanan Saya
+      </ion-button>
+    </div>
+
+  </div>
+
+</ion-content>
+
+<div *ngIf="!isExpired && !isLoading" class="qris-bottom">
+  <button
+    class="confirm-btn"
+    (click)="checkManually()"
+    [disabled]="isPolling"
+  >
+    <ion-spinner *ngIf="isPolling" name="crescent" style="width:18px;height:18px"></ion-spinner>
+    {{ isPolling ? 'Mengecek...' : 'Saya Sudah Bayar' }}
+  </button>
+  <p class="confirm-note">
+    Pembayaran terdeteksi otomatis setiap 5 detik. Tidak perlu klik jika sudah menunggu.
+  </p>
+</div>

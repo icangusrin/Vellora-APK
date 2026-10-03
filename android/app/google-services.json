@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "803661480295",
+    "project_id": "marketplace-498021",
+    "storage_bucket": "marketplace-498021.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:803661480295:android:7703353acf651f7be8afc2",
+        "android_client_info": {
+          "package_name": "com.layananapp.vellora"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "803661480295-71uvaaohcvt6g3b5k912bt0410hlmrj8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.layananapp.vellora",
+            "certificate_hash": "c21ab28827510e75386a54d48d91481cae8210e9"
+          }
+        },
+        {
+          "client_id": "803661480295-tcsp52a58ckva3mnj0ho68vkr4ehbdeq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.layananapp.vellora",
+            "certificate_hash": "bb5d1ace6927b959610f18027703a570557e6487"
+          }
+        },
+        {
+          "client_id": "803661480295-vmgit3d3n5pha23834ccasdiv6v014ep.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.layananapp.vellora",
+            "certificate_hash": "d2c897c56a83fed319aab984d0828d24286c3068"
+          }
+        },
+        {
+          "client_id": "803661480295-k9f3us50l2965gs95509tbt36im9hbdt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCw1spdwAbwR8BV7DV-jBJn4EAUTAavUV0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "803661480295-fsuerttiql9eugmi6anhmvft08gofmp3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,233 @@
+<ion-content [fullscreen]="true">
+
+
+  <div *ngIf="isLoggedIn">
+
+    <!-- HEADER PINK -->
+    <div class="profile-header">
+
+      <div class="user-info">
+
+        <div class="profile-image">
+          <img
+            [src]="userData.photo"
+            (error)="userData.photo='https://cdn-icons-png.flaticon.com/512/149/149071.png'"
+            alt="profile">
+        </div>
+
+        <div class="user-text">
+          <h3>{{ userData.name || 'User' }}</h3>
+          <p>{{ userData.email || 'Belum ada email' }}</p>
+          <span class="edit-tag" (click)="goToEditProfile()">Edit Profil ✏️</span>
+        </div>
+
+      </div>
+
+      <div class="header-icons">
+
+        <ion-icon
+          name="settings-outline"
+          (click)="goToSettings(); $event.stopPropagation()">
+        </ion-icon>
+
+        <ion-icon
+          name="cart-outline"
+          (click)="goToCart(); $event.stopPropagation()">
+        </ion-icon>
+
+      </div>
+
+    </div>
+
+
+    <div
+      class="join-seller-card"
+      *ngIf="!isSeller">
+
+      <div class="seller-left">
+        <img src="assets/icon/toko.png" alt="seller" />
+        <div class="seller-text">
+          <h3>Join Seller di Platform Kami!</h3>
+          <p>Mulai berjualan dan jangkau lebih banyak pembeli</p>
+        </div>
+      </div>
+
+      <button (click)="goToJoinSeller()">
+        Join Seller
+      </button>
+
+    </div>
+
+
+    <div
+      class="seller-dashboard-card"
+      *ngIf="isSeller">
+
+      <div class="seller-dashboard-left">
+
+        <div class="seller-badge">🏪</div>
+
+        <div class="seller-dashboard-text">
+          <h3>Anda adalah Seller!</h3>
+          <p>Kelola toko dan produk kamu</p>
+        </div>
+
+      </div>
+
+      <button
+        class="dashboard-btn"
+        (click)="goToDashboard()">
+
+        Ke Dashboard
+
+      </button>
+
+    </div>
+
+    <!-- TRANSAKSI -->
+    <div class="transaction-section">
+
+      <h4>Transaksi</h4>
+
+      <div class="transaction-menu">
+
+        <div class="transaction-item" (click)="goToPesanan('semua')">
+          <ion-icon name="card-outline"></ion-icon>
+          <span>Bayar</span>
+        </div>
+
+        <div class="transaction-item" (click)="goToPesanan('dikemas')">
+          <ion-icon name="cube-outline"></ion-icon>
+          <span>Dikemas</span>
+        </div>
+
+        <div class="transaction-item" (click)="goToPesanan('dikirim')">
+          <ion-icon name="car-outline"></ion-icon>
+          <span>Dikirim</span>
+        </div>
+
+        <div class="transaction-item" (click)="goToPesanan('selesai')">
+          <ion-icon name="checkmark-done-outline"></ion-icon>
+          <span>Telah Tiba</span>
+        </div>
+
+        <div class="transaction-item" (click)="goToUlasan()">
+          <ion-icon name="star-outline"></ion-icon>
+          <span>Ulasan</span>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div *ngIf="!isLoggedIn">
+
+    <div class="profile-header guest-header">
+
+      <div class="guest-avatar">
+        <ion-icon name="person-outline"></ion-icon>
+      </div>
+
+      <div class="guest-text">
+        <h3>Halo, Tamu!</h3>
+        <p>Login untuk pengalaman belanja terbaik</p>
+      </div>
+
+      <div class="header-icons">
+
+        <ion-icon
+          name="cart-outline"
+          (click)="goToCart()">
+        </ion-icon>
+
+      </div>
+
+    </div>
+
+    <div class="guest-promo-card">
+
+      <div class="promo-icon">🛍️</div>
+
+      <div class="promo-content">
+        <h4>Belanja lebih mudah & hemat</h4>
+        <p>Dapatkan akses ke ribuan produk, pantau pesanan, dan nikmati promo eksklusif member</p>
+      </div>
+
+      <div class="promo-features">
+
+        <div class="promo-feature">
+          <span class="feat-icon">✅</span>
+          <span>Lacak pesanan real-time</span>
+        </div>
+
+        <div class="promo-feature">
+          <span class="feat-icon">✅</span>
+          <span>Promo & voucher eksklusif</span>
+        </div>
+
+        <div class="promo-feature">
+          <span class="feat-icon">✅</span>
+          <span>Chat langsung dengan penjual</span>
+        </div>
+
+      </div>
+
+      <div class="guest-buttons">
+
+        <button class="login-btn" (click)="goToLogin()">
+          Login
+        </button>
+
+        <button class="register-btn" (click)="goToRegister()">
+          Daftar Gratis
+        </button>
+
+      </div>
+
+    </div>
+
+    <div class="transaction-section ghost">
+
+      <h4>Transaksi</h4>
+
+      <div class="transaction-menu">
+
+        <div class="transaction-item locked">
+          <ion-icon name="card-outline"></ion-icon>
+          <span>Bayar</span>
+        </div>
+
+        <div class="transaction-item locked">
+          <ion-icon name="cube-outline"></ion-icon>
+          <span>Dikemas</span>
+        </div>
+
+        <div class="transaction-item locked">
+          <ion-icon name="car-outline"></ion-icon>
+          <span>Dikirim</span>
+        </div>
+
+        <div class="transaction-item locked">
+          <ion-icon name="checkmark-done-outline"></ion-icon>
+          <span>Telah Tiba</span>
+        </div>
+
+        <div class="transaction-item locked">
+          <ion-icon name="star-outline"></ion-icon>
+          <span>Ulasan</span>
+        </div>
+
+      </div>
+
+      <div class="locked-overlay">
+        <ion-icon name="lock-closed-outline"></ion-icon>
+        <p>Login untuk melihat transaksimu</p>
+      </div>
+
+    </div>
+
+  </div>
+
+</ion-content>

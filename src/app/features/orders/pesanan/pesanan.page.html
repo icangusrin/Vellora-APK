@@ -1,0 +1,111 @@
+<ion-content class="pesanan-content">
+
+  <div class="pesanan-header">
+    <ion-icon name="arrow-back-outline" (click)="goBack()"></ion-icon>
+    <h2>Pesanan Saya</h2>
+  </div>
+
+  <div class="status-tabs">
+    <button
+      *ngFor="let s of [
+        {key:'semua', label:'Semua'},
+        {key:'belum-dibayar', label:'Belum Dibayar'},
+        {key:'dikemas', label:'Dikemas'},
+        {key:'dikirim', label:'Dikirim'},
+        {key:'selesai', label:'Selesai'},
+        {key:'dibatalkan', label:'Dibatalkan'}
+      ]"
+      [class.active]="selectedStatus === s.key"
+      (click)="selectStatus(s.key)">
+      {{ s.label }}
+    </button>
+  </div>
+
+  <div class="order-list" *ngIf="isLoading">
+    <div class="order-card skeleton-card" *ngFor="let s of [1,2,3]">
+      <div class="sk-top"></div>
+      <div class="sk-body">
+        <div class="sk-line long"></div>
+        <div class="sk-line short"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="order-list" *ngIf="!isLoading && filteredOrders.length > 0">
+
+    <div
+      class="order-card"
+      *ngFor="let order of filteredOrders"
+      (click)="openDetail(order)">
+
+      <div class="order-top">
+
+        <span class="store-name">
+          {{ order.store_name || 'Toko' }}
+        </span>
+
+        <span
+          class="status-badge"
+          [ngClass]="order.status">
+          {{ getStatusLabel(order.status) }}
+        </span>
+
+      </div>
+
+      <div class="order-product">
+
+        <img
+          [src]="getProductImage(order)"
+          (error)="$any($event.target).src='https://picsum.photos/300'"
+          alt="produk">
+
+        <div class="product-info">
+
+          <h3>{{ order.product_name }}</h3>
+
+          <small *ngIf="order.items_count > 1">
+            +{{ order.items_count - 1 }} produk lainnya
+          </small>
+
+          <p class="price">
+            Rp.{{ order.total_amount.toLocaleString('id-ID') }}
+          </p>
+
+        </div>
+
+        <div class="order-right">
+          <span class="qty">{{ order.qty }}x</span>
+        </div>
+
+      </div>
+
+      <div
+        class="payment-timer"
+        *ngIf="order.status === 'pending_payment' && order.payment_expired_ms">
+
+        <span>⏳ Bayar dalam</span>
+        <strong>{{ getRemainingTime(order.payment_expired_ms) }}</strong>
+
+      </div>
+
+      <div class="order-footer">
+
+        <span class="order-date">
+          {{ order.created_at | date:'d MMM yyyy, HH:mm' }}
+        </span>
+
+        <span class="detail-link">Lihat Detail ›</span>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div
+    class="empty-orders"
+    *ngIf="!isLoading && filteredOrders.length === 0">
+    <p>Tidak ada pesanan di kategori ini</p>
+  </div>
+
+</ion-content>

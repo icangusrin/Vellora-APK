@@ -1,0 +1,54 @@
+<div
+  class="add-cart-overlay"
+  *ngIf="isOpen"
+  (click)="onClose()">
+</div>
+
+<div
+  class="add-cart-modal"
+  *ngIf="isOpen"
+  [@slideUp]>
+
+  <!-- HEADER -->
+  <div class="modal-header">
+    <div class="header-left">
+      <img
+        [src]="product?.image"
+        class="product-thumb"
+        alt="product">
+      <div class="header-info">
+        <h3>{{ product?.price }}</h3>
+        <p>{{ selectedVariant }}</p>
+      </div>
+    </div>
+    <ion-icon
+      name="close-outline"
+      class="close-btn"
+      (click)="onClose()">
+    </ion-icon>
+  </div>
+
+  <!-- BODY -->
+  <div class="modal-body">
+    <h4>Pilih Varian</h4>
+    <div class="variants-container">
+      <button
+        *ngFor="let variant of variants"
+        class="variant-pill"
+        [class.active]="selectedVariant === variant"
+        (click)="selectVariant(variant)">
+        {{ variant }}
+      </button>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="modal-footer">
+    <button
+      class="add-cart-btn"
+      (click)="onAddToCart()">
+      Tambah ke Keranjang
+    </button>
+  </div>
+
+</div>

@@ -1,0 +1,179 @@
+<ion-content fullscreen class="security-content">
+
+  <!-- HEADER -->
+  <div class="security-header">
+
+    <ion-icon
+      name="arrow-back-outline"
+      (click)="goBack()">
+    </ion-icon>
+
+    <h2>
+      Keamanan Akun
+    </h2>
+
+  </div>
+
+  <!-- PROFILE CARD -->
+  <div class="profile-card">
+
+    <div class="profile-photo">
+
+      <!-- FOTO PROFILE -->
+      <img
+        *ngIf="profileImage"
+        [src]="profileImage"
+        class="profile-img">
+
+      <!-- DEFAULT ICON -->
+      <ion-icon
+        *ngIf="!profileImage"
+        name="person-outline">
+      </ion-icon>
+
+    </div>
+
+    <div class="profile-info">
+
+      <h3>
+        {{ userData.name || '-' }}
+      </h3>
+
+      <p>
+        Kelola akun dan keamanan profile
+      </p>
+
+    </div>
+
+  </div>
+
+  <!-- MENU -->
+  <div class="security-menu">
+
+    <!-- PROFILE -->
+    <div
+      class="menu-item"
+      (click)="goToEditProfile()">
+
+      <div class="left-section">
+
+        <ion-icon
+          name="person-outline">
+        </ion-icon>
+
+        <span>
+          Profile Saya
+        </span>
+
+      </div>
+
+      <ion-icon
+        name="chevron-forward-outline">
+      </ion-icon>
+
+    </div>
+
+    <!-- USERNAME -->
+    <div class="menu-item">
+
+      <div class="left-section">
+
+        <ion-icon
+          name="at-outline">
+        </ion-icon>
+
+        <span>
+          Username
+        </span>
+
+      </div>
+
+      <small>
+        {{ userData.name || '-' }}
+      </small>
+
+    </div>
+
+    <!-- PHONE -->
+    <div class="menu-item">
+
+      <div class="left-section">
+
+        <ion-icon
+          name="call-outline">
+        </ion-icon>
+
+        <span>
+          No. Handphone
+        </span>
+
+      </div>
+
+      <div class="right-section">
+
+        <small>
+          {{ userData.phone || 'Belum ditambahkan' }}
+        </small>
+
+      </div>
+
+    </div>
+
+    <!-- EMAIL -->
+    <div
+      class="menu-item">
+      <!-- (click)="goToChangeEmail()"> -->
+
+      <div class="left-section">
+
+        <ion-icon
+          name="mail-outline">
+        </ion-icon>
+
+        <span>
+          Email
+        </span>
+
+      </div>
+
+      <div class="right-section">
+
+        <small>
+          {{ userData.email || '-' }}
+        </small>
+
+        <!-- <ion-icon
+          name="chevron-forward-outline">
+        </ion-icon> -->
+
+      </div>
+
+    </div>
+
+<!-- GANTI PASSWORD -->
+<div
+  class="menu-item"
+  (click)="goToChangePassword()">
+
+  <div class="menu-left">
+
+    <ion-icon
+      name="lock-closed-outline">
+    </ion-icon>
+
+    <span>
+      Ganti Password
+    </span>
+
+  </div>
+
+  <ion-icon
+    name="chevron-forward-outline"
+    class="arrow-icon">
+  </ion-icon>
+
+</div>
+
+  </div>
+
+</ion-content>

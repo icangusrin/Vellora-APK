@@ -1,0 +1,51 @@
+<ion-content fullscreen class="phone-content">
+
+  <div class="phone-header">
+    <ion-icon name="arrow-back-outline" (click)="goBack()"></ion-icon>
+    <h2>{{ mode === 'add' ? 'Tambah No Handphone' : 'Ubah No Handphone' }}</h2>
+  </div>
+
+
+  <div class="phone-card">
+
+    <div class="current-phone-info" *ngIf="mode === 'change'">
+      <small>Nomor aktif saat ini</small>
+      <p>{{ currentPhone }}</p>
+    </div>
+
+    <div class="input-group" *ngIf="mode === 'change'">
+      <label>No. handphone lama</label>
+      <input
+        type="tel"
+        [(ngModel)]="oldPhone"
+        placeholder="Masukkan nomor lama">
+    </div>
+
+    <div class="input-group">
+      <label>{{ mode === 'add' ? 'No. handphone' : 'No. handphone baru' }}</label>
+      <input
+        type="tel"
+        [(ngModel)]="newPhone"
+        placeholder="Contoh: 08123456789">
+    </div>
+
+    <button
+      [disabled]="isSaving"
+      (click)="savePhone()">
+      {{ isSaving ? 'Menyimpan...' : (mode === 'add' ? 'Simpan' : 'Lanjutkan') }}
+    </button>
+
+  </div>
+
+  <app-popup
+    [show]="showPopup"
+    [type]="popupOk ? 'confirm' : 'notice'"
+    [title]="popupOk ? 'Sukses' : 'Pemberitahuan'"
+    [message]="popupMsg"
+    [icon]="popupOk ? 'checkmark-circle-outline' : 'call-outline'"
+    [confirmText]="'OK'"
+    (confirmed)="closePopup()"
+    (cancelled)="closePopup()">
+  </app-popup>
+
+</ion-content>

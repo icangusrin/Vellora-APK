@@ -1,0 +1,48 @@
+<ion-content fullscreen class="verification-content">
+
+  <!-- HEADER -->
+  <div class="verification-header">
+
+    <ion-icon
+      name="arrow-back-outline"
+      (click)="goBack()">
+    </ion-icon>
+
+    <h2>
+      Ubah no handphone
+    </h2>
+
+  </div>
+
+  <!-- CONTENT -->
+  <div class="verification-wrapper">
+
+    <h3>
+      Masukkan email untuk verifikasi code
+    </h3>
+
+    <!-- INPUT -->
+    <div class="input-group">
+
+      <label>
+        Email
+      </label>
+
+      <input
+        type="email"
+        [(ngModel)]="email"
+      />
+
+    </div>
+
+    <!-- BUTTON -->
+    <button
+      (click)="confirmVerification()">
+
+      Konfirmasi
+
+    </button>
+
+  </div>
+
+</ion-content>

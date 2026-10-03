@@ -1,0 +1,154 @@
+<ion-content fullscreen class="checkout-content">
+
+  <div class="checkout-header">
+    <ion-icon name="arrow-back-outline" (click)="goBack()"></ion-icon>
+    <h2>Checkout</h2>
+  </div>
+
+  <div class="section-card address-card" (click)="goToAddress()">
+    <div class="card-left">
+      <div class="icon-wrap green">
+        <ion-icon name="location-outline"></ion-icon>
+      </div>
+      <div class="addr-info">
+        <h3 *ngIf="selectedAddress">
+          {{ selectedAddress.recipient_name }}
+          <span class="phone">({{ selectedAddress.phone_number }})</span>
+        </h3>
+        <h3 *ngIf="!selectedAddress" class="placeholder-text">Pilih Alamat Pengiriman</h3>
+        <p *ngIf="selectedAddress">
+          {{ selectedAddress.full_address }}
+          <span *ngIf="selectedAddress.detail_address">, {{ selectedAddress.detail_address }}</span>
+        </p>
+        <p *ngIf="!selectedAddress" class="placeholder-sub">Belum ada alamat dipilih</p>
+      </div>
+    </div>
+    <ion-icon name="chevron-forward-outline" class="arrow"></ion-icon>
+  </div>
+
+  <!-- PRODUK -->
+  <div class="section-card product-card" *ngFor="let item of checkoutItems">
+    <div class="store-row">
+      <span class="store-name">{{ item.shop?.name || 'Toko' }}</span>
+      <ion-icon name="chevron-forward-outline"></ion-icon>
+    </div>
+    <div class="product-row">
+      <img [src]="item.image || 'https://picsum.photos/300'" (error)="$any($event.target).src='https://picsum.photos/300'">
+      <div class="product-info">
+        <h3>{{ item.name }}</h3>
+        <small *ngIf="item.variant">{{ item.variant }}</small>
+        <h4>Rp.{{ item.price.toLocaleString('id-ID') }}</h4>
+      </div>
+      <span class="qty-badge">{{ item.qty }}x</span>
+    </div>
+  </div>
+
+  <div class="section-card voucher-card" (click)="goToVoucher()">
+    <div class="card-left">
+      <div class="icon-wrap pink">
+        <ion-icon name="ticket-outline"></ion-icon>
+      </div>
+      <div>
+        <span class="label">Voucher</span>
+        <small *ngIf="selectedVoucher" class="voucher-active">{{ selectedVoucher.title || selectedVoucher.voucher_name }}</small>
+        <small *ngIf="!selectedVoucher" class="placeholder-sub">Pilih voucher</small>
+      </div>
+    </div>
+    <ion-icon name="chevron-forward-outline" class="arrow"></ion-icon>
+  </div>
+
+  <div class="section-card method-card">
+    <div class="method-header">
+      <span class="label">Metode Pembayaran</span>
+      <span class="lihat-semua" (click)="goToPaymentMethod()">Ubah</span>
+    </div>
+
+    <div class="method-item disabled" [class.selected]="isCodSelected">
+      <div class="card-left">
+        <div class="icon-wrap green">
+          <ion-icon name="receipt-outline"></ion-icon>
+        </div>
+        <span>COD (Bayar di Tempat)</span>
+      </div>
+      <div class="radio-dot" [class.checked]="isCodSelected"></div>
+    </div>
+
+    <div
+      class="method-item"
+      [class.selected]="selectedPayment && selectedPayment !== 'COD'"
+      *ngIf="selectedPayment && selectedPayment !== 'COD'"
+      (click)="goToPaymentMethod()">
+      <div class="card-left">
+        <div class="icon-wrap pink">
+          <ion-icon [name]="selectedPayment === 'QRIS' ? 'qr-code-outline' : 'business-outline'"></ion-icon>
+        </div>
+        <span>
+          {{ selectedPayment }}
+          <small *ngIf="selectedBank"> — {{ selectedBank }}</small>
+        </span>
+      </div>
+      <div class="radio-dot checked"></div>
+    </div>
+
+  
+    <div
+      class="method-item"
+      *ngIf="!selectedPayment || selectedPayment === 'COD'"
+      (click)="goToPaymentMethod()">
+      <div class="card-left">
+        <div class="icon-wrap pink">
+          <ion-icon name="business-outline"></ion-icon>
+        </div>
+        <span class="placeholder-sub">Transfer Bank / QRIS</span>
+      </div>
+      <ion-icon name="chevron-forward-outline" class="arrow"></ion-icon>
+    </div>
+  </div>
+
+  <div class="section-card summary-card">
+    <h3 class="summary-title">Ringkasan Transaksi</h3>
+
+    <div class="summary-row">
+      <span>Harga Barang</span>
+      <span>{{ getProductTotal() }}</span>
+    </div>
+
+    <div class="summary-row">
+      <span>Ongkir</span>
+      <span>{{ getShippingCost() }}</span>
+    </div>
+
+    <div class="summary-row discount-row" *ngIf="selectedVoucher">
+      <span>Diskon Voucher</span>
+      <span class="discount-val">- Rp.{{ getDiscountAmount().toLocaleString('id-ID') }}</span>
+    </div>
+
+    <div class="summary-row fee-row" *ngIf="gatewayFee > 0">
+      <span>{{ getGatewayFeeLabel() }}</span>
+      <span class="fee-val">+ Rp.{{ gatewayFee.toLocaleString('id-ID') }}</span>
+    </div>
+
+    <div class="summary-divider"></div>
+
+    <div class="summary-row total-row">
+      <span>Total Pembayaran</span>
+      <span class="total-val">{{ getFinalTotal() }}</span>
+    </div>
+  </div>
+
+  <div class="error-box" *ngIf="errorMsg">⚠️ {{ errorMsg }}</div>
+
+</ion-content>
+
+
+<div class="checkout-bottom">
+  <div class="bottom-total">
+    <span>Total</span>
+    <h3>{{ getFinalTotal() }}</h3>
+  </div>
+  <button (click)="createOrder()" [disabled]="isLoading" [class.loading]="isLoading">
+    {{ isLoading ? 'Memproses...' : 'Buat Pesanan' }}
+  </button>
+</div>
+
+<div class="custom-toast" [class.show]="toastVisible">{{ toastMessage }}</div>

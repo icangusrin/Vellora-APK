@@ -1,0 +1,174 @@
+<ion-content fullscreen class="address-content">
+
+  <!-- HEADER -->
+  <div class="address-header">
+
+    <ion-icon
+      name="arrow-back-outline"
+      (click)="goBack()">
+    </ion-icon>
+
+    <h2>Alamat Saya</h2>
+
+  </div>
+
+  <!-- BANNER MODE PILIH (dari checkout) -->
+  <div
+    class="select-banner"
+    *ngIf="isSelectionMode">
+
+    <ion-icon name="location-outline"></ion-icon>
+
+    <span>Pilih alamat pengiriman</span>
+
+  </div>
+
+  <!-- LOADING -->
+  <div
+    class="loading-state"
+    *ngIf="isLoading">
+
+    <ion-spinner name="crescent"></ion-spinner>
+
+    <p>Memuat alamat...</p>
+
+  </div>
+
+  <!-- EMPTY STATE -->
+  <div
+    class="empty-state"
+    *ngIf="!isLoading && addresses.length === 0">
+
+    <ion-icon name="location-outline"></ion-icon>
+
+    <p class="empty-title">
+      Belum ada alamat
+    </p>
+
+    <p class="empty-sub">
+      Tambahkan alamat pengiriman Anda
+    </p>
+
+  </div>
+
+  <!-- DAFTAR ALAMAT -->
+  <div
+    class="address-list"
+    *ngIf="!isLoading && addresses.length > 0">
+
+    <div
+      class="address-card"
+      *ngFor="let item of addresses"
+      [class.is-default]="item.is_default"
+      (click)="selectAddress(item)">
+
+      <!-- IKON PILIH / DEFAULT -->
+      <div class="select-icon">
+
+        <ion-icon
+          name="checkmark-circle"
+          class="icon-checked"
+          *ngIf="item.is_default">
+        </ion-icon>
+
+        <ion-icon
+          name="ellipse-outline"
+          class="icon-unchecked"
+          *ngIf="!item.is_default">
+        </ion-icon>
+
+      </div>
+
+      <!-- INFO ALAMAT -->
+      <div class="address-info">
+
+        <div class="address-meta">
+
+          <span class="recipient-name">
+            {{ item.recipient_name }}
+          </span>
+
+          <span
+            class="primary-badge"
+            *ngIf="item.is_default">
+            Utama
+          </span>
+
+        </div>
+
+        <p class="phone-number">
+          {{ item.phone_number }}
+        </p>
+
+        <p class="address-text">
+          {{ item.full_address }}
+        </p>
+
+        <p
+          class="detail-text"
+          *ngIf="item.detail_address">
+          {{ item.detail_address }}
+        </p>
+
+        <p
+          class="postal-text"
+          *ngIf="item.postal_code">
+          Kode Pos: {{ item.postal_code }}
+        </p>
+
+      </div>
+
+      <!-- TOMBOL HAPUS -->
+      <button
+        class="delete-btn"
+        (click)="confirmDelete(item.id, $event)">
+
+        <ion-icon name="trash-outline"></ion-icon>
+
+      </button>
+
+    </div>
+
+  </div>
+
+  <!-- TOMBOL TAMBAH ALAMAT -->
+  <div class="add-address-wrapper">
+
+    <button
+      class="add-address-btn"
+      (click)="addNewAddress()">
+
+      <ion-icon name="add-outline"></ion-icon>
+
+      Tambah Alamat Baru
+
+    </button>
+
+  </div>
+
+</ion-content>
+
+<!-- POPUP KONFIRMASI HAPUS -->
+<app-popup
+  [show]="showDeleteConfirm"
+  [type]="'danger'"
+  [title]="'Hapus Alamat?'"
+  [message]="'Alamat ini akan dihapus permanen.'"
+  [icon]="'trash-outline'"
+  [confirmText]="'Hapus'"
+  [cancelText]="'Batal'"
+  (confirmed)="deleteAddress()"
+  (cancelled)="cancelDelete()">
+</app-popup>
+
+<!-- POPUP ERROR -->
+<app-popup
+  [show]="showErrorPopup"
+  [type]="'notice'"
+  [title]="'Terjadi Kesalahan'"
+  [message]="errorMessage"
+  [icon]="'alert-circle-outline'"
+  [confirmText]="'OK'"
+  (confirmed)="closePopup()"
+  (cancelled)="closePopup()">
+</app-popup>

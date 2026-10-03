@@ -1,0 +1,218 @@
+<ion-content class="voucher-content">
+
+  <!-- HEADER -->
+  <div class="v-header">
+
+    <ion-icon
+      name="arrow-back-outline"
+      (click)="goBack()">
+    </ion-icon>
+
+    <div class="v-title">
+
+      <h2>
+        {{ storeName ? storeName + ' — Voucher' : 'Voucher' }}
+      </h2>
+
+    </div>
+
+  </div>
+
+
+  <div class="v-tabs" *ngIf="isLoggedIn">
+
+    <button
+      [class.active]="activeTab === 'all'"
+      (click)="activeTab = 'all'">
+      Semua Voucher
+    </button>
+
+    <button
+      [class.active]="activeTab === 'mine'"
+      (click)="activeTab = 'mine'">
+      Voucher Saya
+    </button>
+
+  </div>
+
+
+  <div class="alert-popup" *ngIf="showPopup" [class.ok]="popupOk" [class.err]="!popupOk">
+    <ion-icon [name]="popupOk ? 'checkmark-circle-outline' : 'alert-circle-outline'"></ion-icon>
+    {{ popupMsg }}
+  </div>
+
+
+  <div *ngIf="activeTab === 'all'">
+
+   
+    <div class="v-list" *ngIf="isLoading">
+      <div class="v-card skeleton-card" *ngFor="let s of skeletonItems">
+        <div class="sk-left"></div>
+        <div class="sk-body">
+          <div class="sk-line long"></div>
+          <div class="sk-line short"></div>
+          <div class="sk-line tiny"></div>
+        </div>
+      </div>
+    </div>
+
+   
+    <div class="v-list" *ngIf="!isLoading && vouchers.length > 0">
+
+      <div
+        class="v-card"
+        *ngFor="let v of vouchers"
+        [class.expired-card]="isExpired(v) || isQuotaHabis(v)">
+
+  
+        <div class="v-left">
+          <ion-icon name="ticket-outline"></ion-icon>
+          <span class="discount-val">{{ formatDiscount(v) }}</span>
+          <span class="discount-label">OFF</span>
+        </div>
+
+        <div class="v-divider">
+          <div class="notch top"></div>
+          <div class="dotted"></div>
+          <div class="notch bottom"></div>
+        </div>
+
+  
+        <div class="v-body">
+
+          <h3>{{ v.voucher_name }}</h3>
+
+          <div class="v-meta">
+            <ion-icon name="time-outline"></ion-icon>
+            <span>{{ formatExpiry(v) }}</span>
+          </div>
+
+          <p class="v-min">{{ formatMinTrx(v) }}</p>
+
+          <div class="v-footer">
+
+            <span
+              class="quota-badge"
+              [class.habis]="isQuotaHabis(v)">
+              {{ isQuotaHabis(v) ? 'Habis' : (v.quota - (v.used ?? 0)) + ' tersisa' }}
+            </span>
+
+
+            <button
+              class="claim-btn claimed"
+              *ngIf="isClaimed(v)">
+              <ion-icon name="checkmark-circle-outline"></ion-icon>
+              Diklaim
+            </button>
+
+
+            <button
+              class="claim-btn disabled"
+              *ngIf="!isClaimed(v) && (isExpired(v) || isQuotaHabis(v))">
+              Tidak Tersedia
+            </button>
+
+
+            <button
+              class="claim-btn"
+              *ngIf="!isClaimed(v) && !isExpired(v) && !isQuotaHabis(v)"
+              (click)="claimVoucher(v)"
+              [disabled]="claimingId === v.id">
+              {{ claimingId === v.id ? 'Mengklaim...' : 'Klaim' }}
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="v-empty" *ngIf="!isLoading && vouchers.length === 0">
+      <ion-icon name="ticket-outline"></ion-icon>
+      <p>Belum ada voucher tersedia</p>
+    </div>
+
+  </div>
+
+
+  <div *ngIf="activeTab === 'mine'">
+
+    <div class="v-list" *ngIf="myVouchers.length > 0">
+
+      <div
+        class="v-card mine-card"
+        *ngFor="let mv of myVouchers">
+
+        <div class="v-left">
+          <ion-icon name="ticket-outline"></ion-icon>
+          <span class="discount-val">
+            {{ formatDiscount(mv.voucher) }}
+          </span>
+          <span class="discount-label">OFF</span>
+        </div>
+
+        <div class="v-divider">
+          <div class="notch top"></div>
+          <div class="dotted"></div>
+          <div class="notch bottom"></div>
+        </div>
+
+        <div class="v-body">
+
+          <h3>{{ mv.voucher?.voucher_name }}</h3>
+
+          <div class="v-meta">
+            <ion-icon name="time-outline"></ion-icon>
+            <span>{{ formatExpiry(mv.voucher) }}</span>
+          </div>
+
+          <p class="v-min">{{ formatMinTrx(mv.voucher) }}</p>
+
+          <div class="v-footer">
+            <span class="mine-badge">
+              {{ mv.is_used ? '✅ Digunakan' : '🎫 Siap Digunakan' }}
+            </span>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="v-empty" *ngIf="myVouchers.length === 0">
+      <ion-icon name="ticket-outline"></ion-icon>
+      <p>Belum ada voucher yang diklaim</p>
+    </div>
+
+  </div>
+
+
+</ion-content>
+
+@if (showLoginPopup) {
+  <div class="login-popup-overlay" (click)="closeLoginPopup()">
+    <div class="login-popup-card" (click)="$event.stopPropagation()">
+
+      <div class="popup-icon">
+        <ion-icon name="lock-closed-outline"></ion-icon>
+      </div>
+
+      <h3>Login Diperlukan</h3>
+      <p>Kamu perlu login dulu untuk melihat dan mengklaim voucher.</p>
+
+      <div class="popup-actions">
+        <button class="btn-cancel" (click)="closeLoginPopup()">
+          Nanti Saja
+        </button>
+        <button class="btn-login" (click)="goToLogin()">
+          <ion-icon name="person-outline"></ion-icon>
+          Login Sekarang
+        </button>
+      </div>
+
+    </div>
+  </div>
+}
